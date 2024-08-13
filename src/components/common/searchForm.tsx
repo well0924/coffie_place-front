@@ -1,12 +1,11 @@
 "use client"
 
 import { SearchType } from "@/interface/common";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import {SearchFormProps} from "@/interface/common"
 import Link from "next/link";
 
-export default function SearchForm({initialSearchType,initialSearchVal} : SearchFormProps) {
+export default function SearchForm({initialSearchType,initialSearchVal,basePath} : SearchFormProps) {
     const [searchType, setSearchType] = useState<SearchType>(initialSearchType);
     const [searchVal, setSearchVal] = useState<string>(initialSearchVal);
     
@@ -24,8 +23,8 @@ export default function SearchForm({initialSearchType,initialSearchVal} : Search
                 <option value={SearchType.USER_ID}>사용자 ID</option>
                 <option value={SearchType.USER_EMAIL}>사용자 이메일</option>
                 <option value={SearchType.USER_NAME}>사용자 이름</option>
-                <option value={SearchType.PLACE_NAME}>장소 이름</option>
-                <option value={SearchType.PLACE_ADDRESS}>장소 주소</option>
+                <option value={SearchType.PLACE_NAME}>가게장소 이름</option>
+                <option value={SearchType.PLACE_ADDRESS}>가게장소 주소</option>
             </select>
             <input
                 type="text"
@@ -35,7 +34,7 @@ export default function SearchForm({initialSearchType,initialSearchVal} : Search
                 placeholder="검색어 입력"
             />
              <Link 
-                href={`/notice?page=0&searchType=${searchType}&searchVal=${searchVal}`}
+                href={`${basePath}?page=0&searchType=${searchType}&searchVal=${searchVal}`}
                 className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
             >
                 검색

@@ -37,14 +37,14 @@ export interface Slice<T> {
 
 //검색 enum
 export enum SearchType {
-    TITLE = 't',
-    CONTENTS = 'c',
-    WRITER = 'w',
-    USER_ID = 'i',
-    USER_EMAIL = 'e',
-    USER_NAME = 'n',
-    PLACE_NAME = 'p',
-    PLACE_ADDRESS = 'a',
+    TITLE = 't', //글 제목
+    CONTENTS = 'c',//글 내용
+    WRITER = 'w',//작성자
+    USER_ID = 'i',//회원 아이디
+    USER_EMAIL = 'e',//회원 이메일
+    USER_NAME = 'n',//회원 이름
+    PLACE_NAME = 'p',//가게명
+    PLACE_ADDRESS = 'a',//가게 주소
     ALL = 'all'
 }
 
@@ -59,6 +59,7 @@ export interface SearchParams {
 export interface SearchFormProps {
     initialSearchType: SearchType;
     initialSearchVal: string;
+    basePath: string;
 }
 
 //validate 체크(게시글,공지게시글)

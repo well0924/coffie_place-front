@@ -1,3 +1,4 @@
+import Pagination from "@/components/common/paging";
 import SearchForm from "@/components/common/searchForm";
 import { CommonResponse, Page, SearchParams, SearchType } from "@/interface/common";
 import { noticeResponse } from "@/interface/notice";
@@ -25,8 +26,9 @@ export default async function noticeListPage({ searchParams }: { searchParams: S
 
     try {
         if (searchVal) {
+            console.log('검색어:'+searchVal);
+            console.log('검색 타입:'+searchType);
             response = await noticeListSearch(searchType, searchVal, pageNumber, pageSize);
-
         } else {
             response = await getNoticeList(pageNumber, pageSize);
         }
@@ -39,7 +41,7 @@ export default async function noticeListPage({ searchParams }: { searchParams: S
                 <div className="bg-white shadow-md rounded-lg">
                     <div className="p-6">
                         <h4 className="text-2xl font-semibold text-center mb-4">공지게시판</h4>
-                        <SearchForm initialSearchType={searchType} initialSearchVal={searchVal} />
+                        <SearchForm initialSearchType={searchType} initialSearchVal={searchVal} basePath="/notice"/>
                         <table className="table-auto w-full text-sm text-left text-gray-500">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
@@ -76,49 +78,14 @@ export default async function noticeListPage({ searchParams }: { searchParams: S
                         </table>
                     </div>
                     {/*페이징*/}
-                    <div className="flex justify-between items-center p-6">
-                        <Link href={`/notice?page=${pageNumber - 1}`}>
-                            <button
-                                className={`px-3 py-1 rounded-md text-white ${pageNumber === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
-                                    }`}
-                                disabled={pageNumber === 0}
-                            >
-                                이전
-                            </button>
-                        </Link>
-                        <div className="flex space-x-2">
-                            {Array.from({ length: totalPages }, (_, i) => (
-                                <Link key={i} href={`/notice?page=${i}`}>
-                                    <button
-                                        className={`px-3 py-1 rounded-md ${i === pageNumber
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                            }`}
-                                    >
-                                        {i + 1}
-                                    </button>
-                                </Link>
-                            ))}
-                        </div>
-                        <Link href={`/notice?page=${pageNumber + 1}`}>
-                            <button
-                                className={`px-3 py-1 rounded-md text-white ${pageNumber === totalPages - 1
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-blue-500 hover:bg-blue-600'
-                                    }`}
-                                disabled={pageNumber === totalPages - 1}
-                            >
-                                다음
-                            </button>
-                        </Link>
-                    </div>
+                    <Pagination basePath="/notice" pageNumber={pageNumber} pageSize={pageSize} totalPages={totalPages}></Pagination>
+
                     {/*글 작성*/}
                     <div className="p-4 flex justify-end">
                         <Link href="/page/notice/writePage">
                             <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">글쓰기</button>
                         </Link>
                     </div>
-
                 </div>
             </div>
         </>

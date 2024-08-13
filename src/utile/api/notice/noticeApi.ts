@@ -48,7 +48,12 @@ export const noticeListSearch = async (
             }
         });
         const response = noticeListSearch.data;
-        return response.data.content;
+        console.log(response);
+        if(response.status === 200) {
+            return response;
+        } else {
+            return response;
+        }
     } catch (error) {
         return handleError(error);
     }

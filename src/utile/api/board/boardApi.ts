@@ -5,24 +5,22 @@ import { CommonResponse, handleError, Page, SearchType } from "@/interface/commo
 //자유 게시글 전체 목록(페이징 추가)
 export const getBoardList = async (
     page: number = 0,
-    size: number = 5): Promise<BoardResponse[]> => {
+    size: number = 5): Promise<CommonResponse<Page<BoardResponse>>> => {
 
     try {
-        const res = await api.get<CommonResponse<Page<BoardResponse>>>(`/board/`, {
+        const res = await api.get(`/board/`, {
             params: {
                 page,
                 size
             }
         });
         const response = res.data;
-
-        if (response.status === 200) {
-            console.log('서버 응답:', response.data.content);
-            // 자유 게시글의 목록을 반환
-            return await response.data.content;
+        console.log(response);
+        if(response.status === 200) {
+            return response;
         } else {
-            console.error('서버 응답 오류:', response.message);
-            throw new Error(response.message);
+            console.log('else?');
+            return response;
         }
     } catch (error) {
         console.log(error);
@@ -47,7 +45,13 @@ export const getBoardListSearch = async (
             },
         });
         const response = searchResult.data;
-        return response;
+        if(response.httpStatus === `OK`) {
+            return response;
+        } else {
+            // 서버 오류 응답 처리
+            console.error('서버 오류:', response.message);
+            return response;
+        }
     } catch (error) {
         return handleError(error);
     }
@@ -59,7 +63,6 @@ export const getBoardDetail = async (id: number): Promise<BoardResponse> => {
     try {
         const response = await api.get<CommonResponse<BoardResponse>>(`/board/${id}`);
         const data = response.data.data;
-        console.log(response);
         console.log(response.data);
         return await data;
     } catch (error) {

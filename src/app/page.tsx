@@ -19,10 +19,12 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
     const pageSize = 5; // 페이지당 게시글 수
 
     const [board, top5,notice] = await Promise.all([
-      getBoardList(),
+      getBoardList(pageNumber,pageSize),
       palceReviewTop5List(),
       getNoticeList(pageNumber,pageSize)
     ]);
+
+    const boardList = board.data.content || [];
     const noticeList = notice.data.content  || [];
 
 
@@ -71,12 +73,12 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {board.length > 0 ? (
-                   board.map((obj, index) => (
+                {boardList.length > 0 ? (
+                   boardList.map((obj, index) => (
                     <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{obj.id}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <Link className="text-blue-600 hover:underline" href={`/page/board/detail/${obj.id}`}>
+                            <Link className="text-blue-600 hover:underline" href={`/board/${obj.id}`}>
                                 <>{obj.boardTitle}</>
                             </Link>
                         </td>
@@ -120,7 +122,9 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
                         {obj.isFixed === 'Y' ? obj.noticeGroup : obj.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {obj.noticeTitle}
+                        <Link className="text-blue-600 hover:underline" href={`/notice/${obj.id}`}> 
+                          {obj.noticeTitle}
+                        </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {obj.noticeWriter}  
