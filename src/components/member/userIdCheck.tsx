@@ -1,24 +1,49 @@
 "use client"
 
-import axios from "axios";
+import { userIdDuplicate } from "@/utile/api/member/memberApi";
 import { useState } from "react";
 
+interface MemberIdCheckProps {
+    onIdCheck: (isDuplicate: boolean | null) => void;
+}
 
-
-export default function MemberIdCheck() {
+export default function MemberIdCheck( {onIdCheck} : MemberIdCheckProps) {
     //useState를 사용하려면 함수명은 대문자로 시작을 한다.
     const [userId, setUserId] = useState('');
     const [message, setMessage] = useState('');
-  
+    const [isDuplicate, setIsDuplicate] = useState<boolean | null>(null); // 중복 여부 상태 관리
+    const [validationMessage, setValidationMessage] = useState('');
+
     const checkId = async () => {
-      try {
-        const response = (await axios.get(`/api/member/id-check${userId}`));
-        setMessage(response.data.exists ? '아이디가 이미 존재합니다.' : '사용 가능한 아이디입니다.');
-      } catch (error) {
-        setMessage('아이디 중복 확인 중 오류가 발생했습니다.');
-      }
+
+        if (userId.trim() === '') {
+            setValidationMessage('아이디를 입력하지 않았습니다.');
+            setMessage(''); // 입력하지 않았을 때는 다른 메시지 지우기
+            return;
+        }
+
+        try {
+            const response = userIdDuplicate(userId);
+
+            console.log(response);
+
+            let duplicateResult = (await response).data;
+            console.log(duplicateResult);
+            if (duplicateResult === true) {
+                setMessage('아이디가 존재합니다.');
+                setIsDuplicate(true);
+            } else if (duplicateResult === false) {
+                setMessage('아이디를 사용할 수 있습니다.');
+                setIsDuplicate(false);
+            }
+            setValidationMessage(''); // 유효성 메시지 지우기
+            onIdCheck(isDuplicate); 
+        } catch (error) {
+            console.error('아이디 중복 확인 중 오류 발생:', error); // 오류 내용 확인
+            setMessage('아이디 중복 확인 중 오류가 발생했습니다.');
+        }
     };
-  
+
     return <>
         {/* 아이디 */}
         <div className="mb-4">
@@ -44,8 +69,16 @@ export default function MemberIdCheck() {
                     중복확인
                 </button>
             </div>
-            <div id="msg" className="text-sm text-red-600 mt-2">{message}</div>
+            {/* 메시지 출력 (색상은 isDuplicate에 따라 다름) */}
+            <div
+                id="msg"
+                className={`text-sm mt-2 ${isDuplicate === true ? 'text-red-600' : isDuplicate === false ? 'text-blue-600' : 'text-gray-600'}`}>
+                {message}
+            </div>
         </div>
-        <div id="valid_userId" className="text-sm text-red-600 mb-4"></div>
+        {/* 아이디 입력 유효성 메시지 */}
+        <div id="valid_userId" className="text-sm text-red-600 mb-4">
+            {validationMessage}
+        </div>
     </>
 }

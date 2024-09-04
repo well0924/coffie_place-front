@@ -12,6 +12,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "types": [
+      "kakao.maps.d.ts"
+    ],
+    //kakomap-sdk
     "plugins": [
       {
         "name": "next"
