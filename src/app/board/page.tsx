@@ -11,8 +11,8 @@ export const metadata: Metadata = {
     description: "자유 게시판 목록 페이지",
 };
 
-export default async function boardListPage({ searchParams }: { searchParams: SearchParams }){
-    
+export default async function boardListPage({ searchParams }: { searchParams: SearchParams }) {
+
     // URL의 쿼리 파라미터에서 page 값을 추출
     const pageNumber = parseInt(searchParams.page || '0') || 0;
     const pageSize = 5; // 페이지당 게시글 수
@@ -20,7 +20,7 @@ export default async function boardListPage({ searchParams }: { searchParams: Se
     const searchType = searchParams.searchType || SearchType.ALL;
     //검색어
     const searchVal = searchParams.searchVal || '';
-    
+
     let response: CommonResponse<Page<BoardResponse>>;
     //글 목록 api
     try {
@@ -30,17 +30,16 @@ export default async function boardListPage({ searchParams }: { searchParams: Se
         } else {
             response = await getBoardList(pageNumber, pageSize);
         }
-        
+
         const boards = response.data.content || [];
         const totalPages = response.data.totalPages;
-        console.log('total::'+totalPages);
-        console.log('pageNo::'+pageNumber);
+
         return <>
             <div className="container mx-auto mt-24">
                 <div className="bg-white shadow-md rounded-lg">
                     <div className="p-6">
-                        <h4 className="text-2xl font-semibold text-center mb-4">공지게시판</h4>
-                        <SearchForm initialSearchType={searchType} initialSearchVal={searchVal} basePath="/board"/>
+                        <h4 className="text-2xl font-semibold text-center mb-4">자유 게시판</h4>
+                        <SearchForm initialSearchType={searchType} initialSearchVal={searchVal} basePath="/board" />
                         <table className="table-auto w-full text-sm text-left text-gray-500">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
@@ -90,21 +89,21 @@ export default async function boardListPage({ searchParams }: { searchParams: Se
                 </div>
             </div>
         </>;
-    } catch(error) {
-    
+    } catch (error) {
+
         return <>
             <div className="container mx-auto mt-24">
                 <div className="bg-white shadow-md rounded-lg">
-                    <div className="p-6">
+                    <div className="p-4">
                         <h4 className="text-2xl font-semibold text-center mb-4">자유 게시판</h4>
-                        <SearchForm initialSearchType={searchType} initialSearchVal={searchVal} basePath="/board"/>
+                        <SearchForm initialSearchType={searchType} initialSearchVal={searchVal} basePath="/board" />
                         <table className="table-auto w-full text-sm text-left text-gray-500">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" className="text-center py-3 px-4 hidden md:table-cell">글번호</th>
                                     <th scope="col" className="py-3 px-4 w-1/2">제목</th>
                                     <th scope="col" className="text-center py-3 px-4 hidden md:table-cell">작성자</th>
-                                    <th scope="col" className="text-center py-3 px-4 hidden md:table-cell">조회수</th>  
+                                    <th scope="col" className="text-center py-3 px-4 hidden md:table-cell">조회수</th>
                                     <th scope="col" className="text-center py-3 px-4 hidden md:table-cell">작성날짜</th>
                                 </tr>
                             </thead>
@@ -117,7 +116,7 @@ export default async function boardListPage({ searchParams }: { searchParams: Se
                     </div>
                     {/*글 작성*/}
                     <div className="p-4 flex justify-end">
-                        <Link href="/page/notice/writePage">
+                        <Link href="/board/write">
                             <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">글쓰기</button>
                         </Link>
                     </div>
