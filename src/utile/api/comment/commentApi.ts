@@ -3,11 +3,11 @@ import { CommonResponse, handleError, Slice } from "@/interface/common";
 import { api } from "../axios";
 
 //게시글 댓글 목록
-export const boardCommentList = async (boardId:number) :Promise<commentResponse[]> => {
+export const boardCommentList = async (boardId:number) :Promise<CommonResponse<commentResponse[]>> => {
     try {
         const commentList = await api.get<CommonResponse<commentResponse[]>>(`/comment/${boardId}`);
-        const response = await commentList.data.data;
-        return response;
+        const response = await commentList;
+        return response.data;
     } catch(error) {
         return handleError(error);
     }

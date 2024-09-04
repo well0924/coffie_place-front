@@ -57,16 +57,24 @@ export const getBoardListSearch = async (
     }
 }
 
-
 //자유 게시글 단일 조회
 export const getBoardDetail = async (id: number): Promise<BoardResponse> => {
     try {
         const response = await api.get<CommonResponse<BoardResponse>>(`/board/${id}`);
         const data = response.data.data;
-        console.log(response.data);
-        return await data;
+        return data;
     } catch (error) {
         console.log(error);
+        throw handleError(error);
+    }
+}
+
+//자유 게시글 이전글/다음글
+export const getPreviousNextBoard = async (id:number): Promise<BoardResponse[]> => {
+    try {
+        const response = await api.get(`/board/previous-next/${id}`);
+        return response.data.data;
+    } catch(error) {
         throw handleError(error);
     }
 }

@@ -25,6 +25,7 @@ export const boardLikeDown = async (boardId:number) :Promise<string> => {
 export const boardLikeCount = async (boardId:number) :Promise<string[]> => {
     try {
         const  likeCount = await api.get<CommonResponse<string[]>>(`/like/board/${boardId}`);
+        console.log("게시글 좋아요 수:"+likeCount.data);
         return likeCount.data.data;
     } catch(error) {
         return handleError(error);
