@@ -7,7 +7,6 @@ export enum Role {
 
 //회원 요청
 export interface memberRequest{
-    id:number;
     useId:string;
     password:string;
     memberName:string;

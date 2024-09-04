@@ -15,6 +15,7 @@ export interface BoardResponse{
     boardTitle : string;
     boardContents : string;
     boardAuthor : string;
+    passWd : string;
     readCount : number;
     liked : number;
     fileGroupId : string;
