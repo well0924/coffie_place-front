@@ -8,17 +8,18 @@ export interface AddressSearchProps {
     addressType: string;
     bname: string;
     buildingName: string;
-    onComplete?: (address: string, coordinates: { lat: number; lng: number }) => void;
+    onComplete?: (address: string, coordinates: { lat: number; lng: number }, buildingName: string,  detailedAddress: string) => void;
 }
 
 export default function AddressSearch({ onComplete }: AddressSearchProps) {
     const [showPostcode, setShowPostcode] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState<string>(""); // 선택된 주소 관리
-    const [houseName, setHouseName] = useState<string>(""); // 집 이름 관리
-    const [buildingName, setBuildingName] = useState<string>(""); // 빌딩 이름 관리
+    const [detailedAddress, setDetailedAddress] = useState<string>(""); // 상세 주소 관리
+    const [buildingName, setBuildingName] = useState<string>(""); // 가게 이름 관리
     const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null); // 위경도 값 상태
 
     const handleComplete = (data: AddressSearchProps) => {
+        console.log('검색완료::'+data);
         let fullAddress: string = data.address;
         let extraAddress: string = "";
 
@@ -32,27 +33,38 @@ export default function AddressSearch({ onComplete }: AddressSearchProps) {
             }
             fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
         }
-        if (onComplete) {
-            onComplete(fullAddress,coordinates!);
-        }
 
         setSelectedAddress(fullAddress);
         setShowPostcode(false);
         setBuildingName(data.buildingName);
-        console.log(data);
     };
 
     //카카오맵에서 위경도를 가져오는 로직
     const handleMapLocation = (lat: number, lng: number) => {
-        setCoordinates({ lat, lng });
+        const newCoordinates = { lat, lng };
+        setCoordinates(newCoordinates);
+        console.log(newCoordinates);
+    };
+
+    //상세주소 값
+    const handleDetailedAddressChange = (e: any) => {
+        setDetailedAddress(e.target.value);
     };
 
     // 지도 및 집 이름 출력 로직
     useEffect(() => {
-        if (selectedAddress && houseName) {
-            console.log(`주소: ${selectedAddress}, 집 이름: ${houseName},위경도: ${JSON.stringify(coordinates)}`);
+        if (selectedAddress && buildingName) {
+            console.log(`주소: ${selectedAddress}, 집 이름: ${buildingName},위경도: ${JSON.stringify(coordinates)}`);
         }
-    }, [selectedAddress, houseName, coordinates]);
+        if (onComplete && coordinates) {
+            console.log("onComplete 호출됨");
+            console.log(selectedAddress);
+            console.log(buildingName);
+            console.log(coordinates);
+            console.log(detailedAddress);
+            onComplete(selectedAddress,coordinates,buildingName,detailedAddress!);//부모 컴포넌트에 값을 전달
+        }
+    }, [selectedAddress, buildingName, coordinates,detailedAddress,onComplete]);
 
     return (
         <div>
@@ -83,6 +95,8 @@ export default function AddressSearch({ onComplete }: AddressSearchProps) {
                     name="userAddr2"
                     id="signUpUserAddress"
                     type="text"
+                    value={detailedAddress}
+                    onChange={handleDetailedAddressChange}
                 />
             </div>
 

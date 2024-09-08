@@ -14,24 +14,18 @@ export default function MemberSignForm() {
     const [isIdValid, setIsIdValid] = useState<boolean | null>(null); // 아이디 유효성 상태
     const [username, setUsername] = useState('');//회원 아이디
     const [email, setEmail] = useState('');//회원 이메일
-
     const [password, setPassword] = useState('');//비밀번호
     const [passwordConfirm, setPasswordConfirm] = useState('');//비밀번호 확인
     const [isPasswordMatch, setIsPasswordMatch] = useState<boolean | null>(null); // 비밀번호 일치 여부 상태
-
     const [name, setName] = useState('');//회원이름
     const [age, setAge] = useState('');//회원 나이
     const [gender, setGender] = useState<string[]>([]); // 성별 상태 (여러 값 저장)
     const [phone, setPhone] = useState('');//전화번호
-
-    const [address, setAddress] = useState('');//주소
-    const [detailedAddress, setDetailedAddress] = useState('');//상세주소
-    
+    const [address, setAddress] = useState('');//주소(다음 주소)
+    const [detailedAddress, setDetailedAddress] = useState<string>('');//상세주소
     const [lat, setLat] = useState<number>(0.0); // 위도
     const [lng, setLng] = useState<number>(0.0); // 경도
-    
     const [message, setMessage] = useState('');//출력 메시지
-
     const [formData, setFormData] = useState<memberRequest>({ //회원에 관련된 dto
         useId: '',
         password: '',
@@ -47,10 +41,17 @@ export default function MemberSignForm() {
         role: Role.ROLE_USER,
     });
 
-    //중복 체크
-    const handleDuplicatedCheck = (isIdValid: boolean | null) => {
+    //아이디 중복 체크
+    const handleDuplicatedCheck = (isIdValid: boolean | null, userId: string) => {
         setIsIdValid(isIdValid);
+        setUsername(userId);
     };
+
+    //이메일 중복 체크
+    const handleDuplicatedEmailCheck = (isIdValid: boolean | null, email: string) => {
+        setIsIdValid(isIdValid);
+        setEmail(email);
+    }
 
     //성별 체크 박스
     const handleGenderChange = (e: any) => {
@@ -59,14 +60,22 @@ export default function MemberSignForm() {
     };
 
     // 주소 및 위경도 업데이트
-    const handleAddressComplete = (selectedAddress: string, coordinates: { lat: number; lng: number }) => {
+    const handleAddressComplete = (selectedAddress: string, coordinates: { lat: number; lng: number }, detailedAddress: string) => {
         setAddress(selectedAddress);
         setLat(coordinates.lat);
         setLng(coordinates.lng);
+        setDetailedAddress(detailedAddress);
+        console.log("주소:", selectedAddress, "위도:", coordinates.lat, "경도:", coordinates.lng);
     };
 
     //회원 가입
     const handleSubmit = async (e: any) => {
+        console.log("들어왔음??");
+        // 값이 올바르게 설정되었는지 로그 확인
+        console.log('Address:', address);
+        console.log('detailAddress:', detailedAddress);
+        console.log('Lat:', lat, 'Lng:', lng);
+
         e.preventDefault();
 
         // 비밀번호 일치 여부 체크
@@ -82,35 +91,47 @@ export default function MemberSignForm() {
         if (name.trim() === '') {
             setMessage('이름을 입력하지 않았습니다.');
             setMessage(''); // 입력하지 않았을 때는 다른 메시지 지우기
+            console.log('???');
             return;
         }
         if (age.trim() === '') {
             setMessage('나이를 입력하지 않았습니다.');
             setMessage(''); // 입력하지 않았을 때는 다른 메시지 지우기
+            console.log('???');
             return;
         }
         if (phone.trim() === '') {
             setMessage('전화번호를 입력하지 않았습니다.');
             setMessage(''); // 입력하지 않았을 때는 다른 메시지 지우기
+            console.log('???');
             return;
         }
         if (email.trim() === '') {
             setMessage('이메일을 입력하지 않았습니다.');
             setMessage('');
+            console.log('???');
+            return;
         }
         if (address.trim() === '') {
             setMessage('주소를 입력하지 않았습니다.');
             setMessage(''); // 입력하지 않았을 때는 다른 메시지 지우기
+            console.log('???');
             return;
         }
+        console.log('여기까지??');
+        // gender가 배열인지 확인
+        console.log("gender 값 확인:", gender);
+
+        // gender가 배열이 아닌 경우 처리
+        const genderValue = Array.isArray(gender) ? gender.join(", ") : gender;
 
         const updatedFormData = {
             ...formData,
-            useId: username,
+            userId: username,
             password: password,
             memberName: name,
             userPhone: phone,
-            userGender: gender.join(','), // 여러 성별을 콤마로 연결
+            userGender: genderValue,
             userAge: age,
             userEmail: email,
             userAddr1: address,
@@ -121,9 +142,12 @@ export default function MemberSignForm() {
 
         try {
             const result = await memberCreate(updatedFormData);
-            console.log("회원가입 성공:", result);
-            setMessage("회원가입에 성공했습니다.");
-            return result;
+            console.log(result);
+            if (result === 201) {
+                alert('회원가입에 성공합니다.');
+                location.href = '/';//메인 페이지에 이동하기.
+                return result;
+            }
         } catch (error) {
             console.log(error);
             setMessage("회원가입에 실패했습니다.");
@@ -252,7 +276,7 @@ export default function MemberSignForm() {
                                     </div>
 
                                     {/* 이메일 */}
-                                    <MemberEmailCheck onIdCheck={handleDuplicatedCheck} />
+                                    <MemberEmailCheck onIdCheck={handleDuplicatedEmailCheck} />
 
                                     {/* 전화번호 */}
                                     <div className="mb-4">
@@ -265,7 +289,7 @@ export default function MemberSignForm() {
                                             name="userPhone"
                                             className="form-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                             value={phone}
-                                            onChange={(e) => { e.target.value }}
+                                            onChange={(e) => { setPhone(e.target.value) }}
                                         />
                                     </div>
                                     <div id="valid_userPhone" className="text-sm text-red-600 mb-4">

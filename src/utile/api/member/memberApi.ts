@@ -67,12 +67,26 @@ export const memberDetail = async (id: number): Promise<memberResponse> => {
 }
 
 //회원 가입
-export const memberCreate = async (data: memberRequest): Promise<number> => {
+export const memberCreate = async (data: memberRequest): Promise<number | string> => {
     try {
         const createResult = await api.post(`/member/`, data);
+        //응답값에 따른 분기처리
+        let result = createResult.status;
         console.log(createResult);
-        return createResult.data;
-    } catch (error) {
+        console.log(result);
+        return result;
+    } catch (error:any) {
+        if (error.response) {
+            const errorData = error.response.data;
+
+            // 400인 경우 (잘못된 요청)
+            if (error.response.status === 400) {
+                // 오류 메시지를 반환 (예: 유효성 검사 실패 메시지)
+                if (errorData.valid_password || errorData.valid_userId) {
+                    return `${errorData.valid_password || ""} ${errorData.valid_userId || ""}`.trim();
+                }
+            }
+        }
         console.log(error);
         throw error;
     }

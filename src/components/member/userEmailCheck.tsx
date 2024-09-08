@@ -4,7 +4,7 @@ import { userEmailDuplicate } from "@/utile/api/member/memberApi";
 import { useState } from "react";
 
 interface MemberEmailCheckProps {
-    onIdCheck: (isDuplicate: boolean | null) => void;
+    onIdCheck: (isDuplicate: boolean | null,userEmail: string) => void;
 }
 
 export default function MemberEmailCheck({onIdCheck} : MemberEmailCheckProps) {
@@ -29,12 +29,13 @@ export default function MemberEmailCheck({onIdCheck} : MemberEmailCheckProps) {
             if (duplicateResult === true) {
                 setMessage('이메일이 존재합니다.');
                 setIsDuplicate(true);
+                setUserEmail(userEmail);
             } else if (duplicateResult === false) {
                 setMessage('사용할 수 있는 이메일입니다.');
                 setIsDuplicate(false);
             }
             setValidationMessage(''); // 유효성 메시지 지우기
-            onIdCheck(isDuplicate); 
+            onIdCheck(isDuplicate,userEmail); 
         } catch (error) {
             setMessage('이메일 중복 확인 중 오류가 발생했습니다.');
         }

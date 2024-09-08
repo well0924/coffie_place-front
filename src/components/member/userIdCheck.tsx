@@ -4,7 +4,7 @@ import { userIdDuplicate } from "@/utile/api/member/memberApi";
 import { useState } from "react";
 
 interface MemberIdCheckProps {
-    onIdCheck: (isDuplicate: boolean | null) => void;
+    onIdCheck: (isDuplicate: boolean | null, userId: string) => void;
 }
 
 export default function MemberIdCheck( {onIdCheck} : MemberIdCheckProps) {
@@ -32,12 +32,14 @@ export default function MemberIdCheck( {onIdCheck} : MemberIdCheckProps) {
             if (duplicateResult === true) {
                 setMessage('아이디가 존재합니다.');
                 setIsDuplicate(true);
+                onIdCheck(true, userId);
             } else if (duplicateResult === false) {
                 setMessage('아이디를 사용할 수 있습니다.');
                 setIsDuplicate(false);
+                onIdCheck(false, userId);
             }
             setValidationMessage(''); // 유효성 메시지 지우기
-            onIdCheck(isDuplicate); 
+            onIdCheck(isDuplicate, userId); 
         } catch (error) {
             console.error('아이디 중복 확인 중 오류 발생:', error); // 오류 내용 확인
             setMessage('아이디 중복 확인 중 오류가 발생했습니다.');
