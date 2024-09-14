@@ -7,15 +7,15 @@ export const memberList = async (
     page: number = 0,
     size: number = 5): Promise<CommonResponse<Page<memberResponse>>> => {
     try {
-        const memberList = await api.get(`/member/`,{
-            params :{
+        const memberList = await api.get(`/member/`, {
+            params: {
                 page,
                 size
             }
         });
         const response = memberList.data;
         console.log(memberList.data);
-        if(response.status === 200) {
+        if (response.status === 200) {
             return response;
         } else {
             return response;
@@ -34,7 +34,7 @@ export const memberSearch = async (
     size: number = 5): Promise<CommonResponse<Page<memberResponse>>> => {
 
     try {
-        const searchList = await api.get(`/member/search`,{
+        const searchList = await api.get(`/member/search`, {
             params: {
                 searchType,
                 searchVal,
@@ -43,10 +43,10 @@ export const memberSearch = async (
             }
         });
         const response = searchList.data;
-        if (response.httpStatus === 'OK'){
+        if (response.httpStatus === 'OK') {
             return response;
         } else {
-            console.log('Error Message:'+response.message);
+            console.log('Error Message:' + response.message);
             return response;
         }
     } catch (error) {
@@ -75,7 +75,7 @@ export const memberCreate = async (data: memberRequest): Promise<number | string
         console.log(createResult);
         console.log(result);
         return result;
-    } catch (error:any) {
+    } catch (error: any) {
         if (error.response) {
             const errorData = error.response.data;
 
@@ -118,7 +118,7 @@ export const memberUpdate = async (id: number, data: memberRequest): Promise<num
 export const userIdDuplicate = async (userId: string): Promise<CommonResponse<boolean>> => {
     try {
         const duplicateResult = await api.get(`/member/id-check/${userId}`);
-        console.log("중복여부::"+duplicateResult.data);
+        console.log("중복여부::" + duplicateResult.data);
         console.log(duplicateResult.status);
         return duplicateResult.data;
     } catch (error) {
@@ -139,7 +139,7 @@ export const userEmailDuplicate = async (userEmail: string): Promise<CommonRespo
 }
 
 //회원 아이디 찾기
-export const findUserId = async (userName : string,userEmail : string): Promise<CommonResponse<string>> => {
+export const findUserId = async (userName: string, userEmail: string): Promise<CommonResponse<string>> => {
     try {
         const findId = await api.get(`/member/find-id/${userName}/${userEmail}`);
         return findId.data;
@@ -156,7 +156,7 @@ export const temporaryPassword = async (userEmail: string): Promise<void> => {
         const response = await api.post(`/member/temporary-email`, null, {
             params: { userEmail }
         });
-
+        console.log(response);
         // 응답 처리 (예: 성공 메시지 반환)
         if (response.status === 200) {
             console.log('임시 비밀번호가 이메일로 발송되었습니다.');
@@ -170,13 +170,13 @@ export const temporaryPassword = async (userEmail: string): Promise<void> => {
 };
 
 //회원 아이디 자동 완성
-export const memberIdAutoCompleted = async (userId:string): Promise<CommonResponse<string[]>> => {
+export const memberIdAutoCompleted = async (userId: string): Promise<CommonResponse<string[]>> => {
     try {
         const response = await api.get(`/member/autocomplete`, {
             params: {
-              userId,
+                userId,
             },
-          }); 
+        });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -185,9 +185,13 @@ export const memberIdAutoCompleted = async (userId:string): Promise<CommonRespon
 }
 
 //회원 선택 삭제
-export const memberSelectDelete = async (): Promise<void> => {
+export const memberSelectDelete = async (userIds: string[]): Promise<void> => {
     try {
-        
+        await api.post('/member/select-delete', userIds, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
     } catch (error) {
         console.log(error);
         throw handleError(error);
