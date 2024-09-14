@@ -40,8 +40,13 @@ export default function SearchForm({ initialSearchType, initialSearchVal, basePa
         event.stopPropagation(); // 이벤트 전파 방지
         console.log("Clicked id:", suggestion); // 클릭한 아이디 출력
         setSearchVal(suggestion); // 선택한 아이디로 searchVal 업데이트
-        setShowSuggestions(false); // 제안 목록 숨기기
     };
+
+    useEffect(() => {
+        if (suggestedUserIds.includes(searchVal)) {
+            setShowSuggestions(false); // 선택한 아이디로 searchVal 업데이트 후 제안 목록 숨기기
+        }
+    }, [searchVal, suggestedUserIds]);
 
     // 클릭 이벤트를 통해 제안 목록 숨기기
     const handleClickOutside = (event: MouseEvent) => {
