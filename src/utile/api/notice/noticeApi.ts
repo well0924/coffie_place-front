@@ -74,10 +74,13 @@ export const noticeDetail = async (id: number): Promise<noticeResponse> => {
 export const noticeCreate = async (data: noticeRequest, files: File[]): Promise<number> => {
 
     const formData = new FormData();
-
+    console.log(data);
+    
     // BoardRequest 객체를 FormData에 추가
-    formData.append("noticeDto", new Blob([JSON.stringify(data)], { type: "application/json" }));
-
+    const noticeDto = new Blob([JSON.stringify(data)], { type: "application/json" });
+    console.log(noticeDto);
+    formData.append("noticeDto", noticeDto);
+    
     // 파일 첨부 제한
     const fileCount = 6;
 
@@ -90,14 +93,16 @@ export const noticeCreate = async (data: noticeRequest, files: File[]): Promise<
     files.forEach(file => {
         formData.append("files", file);
     });
-
+    console.log(formData);
+    console.log(files);
     try {
-        const createResponse = await api.post<CommonResponse<number>>(`/notice/`, { formData },
+        const createResponse = await api.post<CommonResponse<number>>(`/notice/`,  formData ,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+        console.log(createResponse);
         const response = createResponse.data;
         return await response.data;
     } catch (error) {
