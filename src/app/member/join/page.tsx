@@ -1,6 +1,4 @@
 import MemberSignForm from "@/components/member/signForm";
-import MemberEmailCheck from "@/components/member/userEmailCheck";
-import MemberIdCheck from "@/components/member/userIdCheck";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

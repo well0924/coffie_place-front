@@ -1,6 +1,5 @@
 "use client"
-import DaumPostcode from "react-daum-postcode";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import MemberEmailCheck from "./userEmailCheck";
 import MemberIdCheck from "./userIdCheck";
 import { memberRequest, Role } from "@/interface/member";
