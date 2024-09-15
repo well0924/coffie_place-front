@@ -1,8 +1,12 @@
 "use client"
 
+import { memberRequest } from "@/interface/member";
+import { memberDelete } from "@/utile/api/member/memberApi";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface MemberDetailProps {
+    id:number;
     userId: string;
     password: string;
     userEmail: string;
@@ -15,8 +19,8 @@ interface MemberDetailProps {
 }
 
 export default function MemberModifyPage({
+    id,
     userId,
-    password,
     userEmail,
     memberName,
     userAge,
@@ -25,13 +29,40 @@ export default function MemberModifyPage({
     userAddr1,
     userAddr2,
 }: MemberDetailProps) {
-
-    const [gender, setGender] = useState(userGender);
-
+    const [username, setUsername] = useState(userId);//회원 아이디
+    const [email, setEmail] = useState('');//회원 이메일
+    const [password, setPassword] = useState('');//비밀번호
+    const [passwordConfirm, setPasswordConfirm] = useState('');//비밀번호 확인
+    const [isPasswordMatch, setIsPasswordMatch] = useState<boolean | null>(null); // 비밀번호 일치 여부 상태
+    const [name, setName] = useState('');//회원이름
+    const [age, setAge] = useState('');//회원 나이
+    const [gender, setGender] = useState(userGender);//회원 성별
+    const [phone, setPhone] = useState('');//전화번호
+    const [address, setAddress] = useState('');//주소(다음 주소)
+    const [detailedAddress, setDetailedAddress] = useState<string>('');//상세주소
+    const [lat, setLat] = useState<number>(0.0); // 위도
+    const [lng, setLng] = useState<number>(0.0); // 경도
+    const [message, setMessage] = useState('');//출력 메시지
+    
+    //회원성별 
     const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setGender(event.target.value);
     };
+    //회원 주소기능
+    
+    //회원수정
+    const updateMember = async (id:number,data:memberRequest) => {
 
+    }
+    //회원삭제
+    const deleteMember = async (id:number) => {
+        const response = await memberDelete(id);
+        alert("삭제되었습니다."); 
+    }
+    //취소 버튼
+    const cancelButton = () => {
+        window.history.back();
+    }
     return <>
         <div className="container mx-auto mt-24">
             <div className="flex justify-center">
@@ -42,6 +73,7 @@ export default function MemberModifyPage({
                         </div>
                         <div className="p-6">
                             <form action="/api/memberupdate" method="POST">
+                                <input type="hidden" name="id" defaultValue={id}></input>
                                 <div className="mb-4">
                                     <label htmlFor="user_id" className="block text-sm font-medium text-gray-700">아이디</label>
                                     <input
@@ -49,17 +81,6 @@ export default function MemberModifyPage({
                                         id="user_id"
                                         name="userId"
                                         defaultValue={userId}
-                                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <label htmlFor="user_pw" className="block text-sm font-medium text-gray-700">비밀번호</label>
-                                    <input
-                                        type="password"
-                                        id="user_pw"
-                                        name="userPw"
-                                        defaultValue={password}
                                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -105,7 +126,7 @@ export default function MemberModifyPage({
                                                 type="checkbox"
                                                 className="mr-2"
                                                 name="userGender"
-                                                checked={gender === "남성"}
+                                                checked={gender.includes("남성")}
                                                 onChange={handleGenderChange}
                                             />
                                             남성
@@ -115,7 +136,7 @@ export default function MemberModifyPage({
                                                 type="checkbox"
                                                 className="mr-2"
                                                 name="userGender"
-                                                checked={gender === "여성"}
+                                                checked={gender.includes("여성")}
                                                 onChange={handleGenderChange}
                                             />
                                             여성
@@ -168,18 +189,21 @@ export default function MemberModifyPage({
                                     <button
                                         type="submit"
                                         className="px-4 py-2 bg-blue-600 text-white rounded-md mr-2"
+
                                     >
                                         정보수정
                                     </button>
                                     <button
-                                        type="submit"
+                                        type="button"
                                         className="px-4 py-2 bg-red-600 text-white rounded-md mr-2"
+                                        onClick={() => deleteMember(id)}
                                     >
                                         정보삭제
                                     </button>
                                     <button
                                         type="button"
                                         className="px-4 py-2 bg-gray-500 text-white rounded-md"
+                                        onClick={() => cancelButton()}
                                     >
                                         취소
                                     </button>
