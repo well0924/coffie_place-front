@@ -3,8 +3,12 @@
 import { noticeRequest } from "@/interface/notice";
 import { noticeCreate } from "@/utile/api/notice/noticeApi";
 import Link from "next/link";
-import { useState } from "react";
+import 'react-quill/dist/quill.snow.css';
+import { useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import ReactQuill, { ReactQuillProps } from "react-quill";
 
+//게시글 작성시 400에러에 관련된 인터페이스
 interface Errors {
     noticeGroup?: string;
     isFixed?: string;
@@ -14,6 +18,21 @@ interface Errors {
     general?: string;
 }
 
+interface ForwardedQuillComponent extends ReactQuillProps {
+	forwardedRef: React.Ref<ReactQuill>;
+}
+
+const QuillNoSSRWrapper = dynamic(
+	async () => {
+		const { default: QuillComponent } = await import('react-quill');
+		const Quill = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
+			<QuillComponent ref={forwardedRef} {...props} />
+		);
+		return Quill;
+	},
+	{ loading: () => <div>...loading</div>, ssr: false },
+); 
+
 export default function NoticeBoardWritePage() {
     const [noticeTitle, setNoticeTitle] = useState('');//공지게시글 제목
     const [noticeContents, setNoticeContents] = useState('');//공지게시글 내용
@@ -21,6 +40,7 @@ export default function NoticeBoardWritePage() {
     const [isFixed, setIsFixed] = useState('');//공지게시판 고정여부
     const [file, setFile] = useState<File[]>([]);//첨부파일
     const [errors, setErrors] = useState<Errors>({});
+    const quillRef = useRef<ReactQuill>(null);
 
     //파일 첨부
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,18 +51,18 @@ export default function NoticeBoardWritePage() {
 
     //게시글 작성
     const handleSubmit = async () => {
-        const fileGroupId = `fileGroup_${Math.random().toString(36).substring(2, 15)}`; // 랜덤 파일 그룹 ID 생성
-
+        const fileGroupId = `notice_${Math.random().toString(36).substring(2, 10)}`; // 랜덤 파일 그룹 ID 생성 notice_랜덤문자8자
+        //에디터 적용에 필요한 글
         const data: noticeRequest = {
             noticeGroup,
             isFixed,
             noticeTitle,
             noticeWriter: 'well4149',
             noticeContents,
-            fileGroupId : fileGroupId
+            fileGroupId: fileGroupId
         }
         console.log(data);
-        
+
         try {
             const response = await noticeCreate(data, file);
             if (response > 0) {
@@ -111,20 +131,19 @@ export default function NoticeBoardWritePage() {
                         />
                         {errors.noticeTitle && <p className="text-red-500">{errors.noticeTitle}</p>}
                     </div>
-
+                    {/* 글 내용 부분에 에디터를 적용 */}
                     <div className="mt-4">
                         <label htmlFor="noticeContent" className="block text-sm font-medium">내용</label>
-                        <textarea
-                            id="noticeContent"
-                            name="noticeContents"
-                            rows={10}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm resize-none"
+                        <QuillNoSSRWrapper 
+                            forwardedRef={quillRef}
                             value={noticeContents}
-                            onChange={(e) => setNoticeContents(e.target.value)}
-                        ></textarea>
+                            onChange={setNoticeContents}
+                            style={{ width: '95%', height: '170px' }}
+						    theme="snow"    
+                        />
                         {errors.noticeContents && <p className="text-red-500">{errors.noticeContents}</p>}
                     </div>
-
+                    <br></br>        
                     <div className="mt-4">
                         <label htmlFor="addfile" className="block text-sm font-medium">첨부 파일</label>
                         <input

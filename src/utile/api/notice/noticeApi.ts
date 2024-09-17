@@ -104,6 +104,8 @@ export const noticeCreate = async (data: noticeRequest, files: File[]): Promise<
             });
         console.log(createResponse);
         const response = createResponse.data;
+        //성공후 공지게시판 목록으로 이동
+        location.href='/notice';
         return await response.data;
     } catch (error) {
         console.log(error);

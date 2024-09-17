@@ -2,12 +2,15 @@ import DownloadButton from "@/components/common/DownloadButton";
 import { noticeBoardAttachList } from "@/utile/api/attach/attachApi";
 import { noticeDetail } from "@/utile/api/notice/noticeApi";
 import { Metadata } from "next";
+import dynamic from 'next/dynamic';
+import 'react-quill/dist/quill.snow.css';
 import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "공지 게시판 조회 페이지",
     description: "공지 게시판 조회 페이지",
 };
+
 
 export default async function noticeDetailPage({
     params,
@@ -79,9 +82,9 @@ export default async function noticeDetailPage({
                                     </div>
                                     <div className="mb-6">
                                         <label className="block text-gray-700 font-semibold mb-2">내용</label>
-                                        <p className="bg-gray-100 p-4 rounded-lg text-gray-700">
+                                         <p className="bg-gray-100 p-4 rounded-lg text-gray-700">
                                             {notice.noticeContents}
-                                        </p>
+                                        </p> 
                                     </div>
                                     <div className="mb-6">
                                         <label className="block text-gray-700 font-semibold mb-2">첨부 파일</label>
@@ -96,15 +99,12 @@ export default async function noticeDetailPage({
                                         )}
                                     </div>
                                     <div className="flex justify-end space-x-4">
-                                        <Link href="/notice">
-                                            <button className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
-                                                목록
-                                            </button>
+                                        <Link href="/notice" className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
+                                            목록
                                         </Link>
                                         <button
                                             type="button"
-                                            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-                                        >
+                                            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                                             수정하기
                                         </button>
                                     </div>
