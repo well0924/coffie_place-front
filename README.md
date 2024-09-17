@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Coffies Vol.02 Front 
 
-## Getting Started
+기존의 Coffies Vol.02에서 화면에 적용이 되었던 Theymleaf를 Next.js로 변경을 해본 리포지터리 입니다. 
 
-First, run the development server:
+### 기술스택
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+React : 18
+React-dom : 18
+React-quill : 2.0.0
+React-kakao-maps-sdk : 1.1.27
+React-daum-postcode : 3.1.3
+React-query : 5.51.23
+Next : 14.2.5
+TypeScript : 5
+Axios : 1.7.3
+Tail-Wind : 3.4.1
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 기술을 사용한 이유 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+React,Next
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- 동적 렌더링 및 성능 최적화
+    - 타임리프는 서버 사이드에서 HTML을 렌더링하는 템플릿 엔진으로, 서버에서 모든 페이지를 생성한 후 클라이언트로 보내는 방식입니다.
+    - Next.js의 경우에는 페이지를 동적으로 생성을 하고 SSR,CSR을 지원을 해서 성능과 유연성을 극대화할 수 있습니다.
 
-## Learn More
+TypeScript
 
-To learn more about Next.js, take a look at the following resources:
+- 정적 타입 검사
+    - TypeScript는 정적 타입을 제공하여 코드에서 발생할 수 있는 타입 관련 오류를 개발 중에 미리 발견할 수 있습니다. 이는 런타임에서 발생하는 버그를 줄여줄수 있습니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 코드 가독성 향상
+    - TypeScript는 명확한 타입 정의 덕분에 코드의 의도를 명확히 하고, 코드를 읽고 이해하기 쉽게 만듭니다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Axios
 
-## Deploy on Vercel
+- 간편한 HTTP 요청 처리
+    - 비동기 처리를 할 때 간결하고 가독성이 있는 코드를 제공할 수 있습니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 인터셉터 기능을 지원
+    - 세션이나 토큰을 사용을 할 때 자동으로 추가를 해줄수 있고, 오류 응답에 공통적으로 처리를 할 수 있습니다. 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
