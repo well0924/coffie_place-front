@@ -1,7 +1,7 @@
 "use client"
 
 import { memberRequest } from "@/interface/member";
-import { memberDelete } from "@/utile/api/member/memberApi";
+import { memberDelete, memberUpdate } from "@/utile/api/member/memberApi";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -52,7 +52,8 @@ export default function MemberModifyPage({
     
     //회원수정
     const updateMember = async (id:number,data:memberRequest) => {
-
+        const response = await memberUpdate(id,data);
+        alert('회원 정보가 수정이 되었습니다.');
     }
     //회원삭제
     const deleteMember = async (id:number) => {
@@ -189,7 +190,6 @@ export default function MemberModifyPage({
                                     <button
                                         type="submit"
                                         className="px-4 py-2 bg-blue-600 text-white rounded-md mr-2"
-
                                     >
                                         정보수정
                                     </button>

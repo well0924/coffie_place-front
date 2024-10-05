@@ -9,6 +9,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import Script from "next/script";
 import CustomErrorBoundary from "../components/ErrorBoundary";
+import ReactQueryProviders from "@/utile/ReactQueryProvider";
 
 config.autoAddCss = false;
 
@@ -33,7 +34,9 @@ export default function RootLayout({
           <Header />
           <div className="flex flex-col min-h-screen">
             <main className="flex-grow pt-8 pb-8 px-4"> {/* 여백 설정 */}
-              {children}
+              <ReactQueryProviders>
+                {children}
+              </ReactQueryProviders>
             </main>
             <Footer />
           </div>
