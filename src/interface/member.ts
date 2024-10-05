@@ -7,8 +7,8 @@ export enum Role {
 
 //회원 요청
 export interface memberRequest{
-    useId:string;
-    password:string;
+    userId:string;
+    password?: string; //회원 수정시에는 사용을 하지 않기.
     memberName:string;
     userPhone:string;
     userGender:string;

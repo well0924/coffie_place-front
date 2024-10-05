@@ -80,6 +80,7 @@ export default function AddressSearch({ onComplete }: AddressSearchProps) {
                         value={selectedAddress}
                     />
                     <button
+                        type="button"
                         onClick={() => setShowPostcode(true)}
                         className="ml-3 px-3 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-600"
                     >

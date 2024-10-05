@@ -1,7 +1,5 @@
-import { handleError } from "@/interface/common";
 import { memberDetail } from "@/utile/api/member/memberApi";
 import { Metadata } from "next";
-import MemberModify from "@/components/member/userDetail";
 import MemberModifyPage from "@/components/member/userDetail";
 
 export const metaData: Metadata = {
@@ -14,8 +12,6 @@ export default async function memberDetailPage({ params,
     params: { id: string };
 }) {
     const id = params.id;
-
-    console.log("번호:::" + id);
 
     //api 사용 
     try {
@@ -31,8 +27,11 @@ export default async function memberDetailPage({ params,
             userAge={response.userAge}
             userGender={response.userGender}
             userPhone={response.userPhone}
+            memberLat={response.memberLat}
+            memberLng={response.memberLng}
             userAddr1={response.userAddr1}
             userAddr2={response.userAddr2}
+            role={response.role}
         />);
     } catch (error) {
         console.log(error);

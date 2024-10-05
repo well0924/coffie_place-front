@@ -26,7 +26,7 @@ export default function MemberSignForm() {
     const [lng, setLng] = useState<number>(0.0); // 경도
     const [message, setMessage] = useState('');//출력 메시지
     const [formData, setFormData] = useState<memberRequest>({ //회원에 관련된 dto
-        useId: '',
+        userId: '',
         password: '',
         memberName: '',
         userPhone: '',
