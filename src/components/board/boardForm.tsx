@@ -2,6 +2,7 @@
 
 import { BoardRequest } from '@/interface/board';
 import { createBoard } from '@/utile/api/board/boardApi';
+import { useAuth } from '@/utile/context/AuthContext';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -34,7 +35,7 @@ const QuillNoSSRWrapper = dynamic(
 );
 
 export default function FreeBoardWritePage() {
-
+    const { user } = useAuth();
     const [boardTitle, setBoardTitle] = useState("");//자유 게시글 제목
     const [boardContents, setBoardContents] = useState("");//자유 게시글 내용
     const [boardAuthor, setBoardAuthor] = useState("");//자유 게시글 작성자
@@ -51,12 +52,13 @@ export default function FreeBoardWritePage() {
 
     //자유게시글 작성
     const handleFreeBoard = async () => {
+        //file-group-id
         const randomId = `free_${Math.random().toString(36).substring(2, 10)}`;
 
         const data: BoardRequest = {
             boardTitle,
             boardContents,
-            boardAuthor:'user1',            
+            boardAuthor:user?.userId,            
             readCount:0,
             passWd,
             fileGroupId: randomId
@@ -118,14 +120,6 @@ export default function FreeBoardWritePage() {
 
                             <div className="mb-6">
                                 <label htmlFor="board_Contents" className="block text-gray-700 text-sm font-bold mb-2">내용</label>
-                                {/*<textarea
-                                    id="board_Contents"
-                                    name="boardContents"
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    rows={10}
-                                    value={boardContents}
-                                    onChange={(e) => setBoardContents(e.target.value)}
-                                ></textarea>*/}
                                 <QuillNoSSRWrapper
                                     forwardedRef={quillRef}
                                     value={boardContents}

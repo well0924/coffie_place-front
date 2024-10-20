@@ -3,7 +3,7 @@
 export interface BoardRequest{
     boardTitle : string;
     boardContents : string;
-    boardAuthor : string;
+    boardAuthor?: string; //회원 아이디를 작성자로.
     readCount : number;
     passWd : string;
     fileGroupId : string;

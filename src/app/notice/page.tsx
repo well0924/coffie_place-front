@@ -1,5 +1,6 @@
 import Pagination from "@/components/common/paging";
 import SearchForm from "@/components/common/searchForm";
+import NoticeWriteButton from "@/components/notice/noticeWriteButton";
 import { CommonResponse, Page, SearchParams, SearchType } from "@/interface/common";
 import { noticeResponse } from "@/interface/notice";
 import { getNoticeList, noticeListSearch } from "@/utile/api/notice/noticeApi";
@@ -81,11 +82,7 @@ export default async function noticeListPage({ searchParams }: { searchParams: S
                     <Pagination basePath="/notice" pageNumber={pageNumber} pageSize={pageSize} totalPages={totalPages}></Pagination>
 
                     {/*글 작성*/}
-                    <div className="p-4 flex justify-end">
-                        <Link href="/notice/write">
-                            <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">글쓰기</button>
-                        </Link>
-                    </div>
+                    <NoticeWriteButton></NoticeWriteButton>
                 </div>
             </div>
         </>

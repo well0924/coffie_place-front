@@ -1,8 +1,10 @@
+import BoardWriteButton from "@/components/board/boardWriteButton";
 import Pagination from "@/components/common/paging";
 import SearchForm from "@/components/common/searchForm";
 import { BoardResponse } from "@/interface/board";
 import { CommonResponse, Page, SearchParams, SearchType } from "@/interface/common";
 import { getBoardList, getBoardListSearch } from "@/utile/api/board/boardApi";
+import { useAuth } from "@/utile/context/AuthContext";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function boardListPage({ searchParams }: { searchParams: SearchParams }) {
-
+    
     // URL의 쿼리 파라미터에서 page 값을 추출
     const pageNumber = parseInt(searchParams.page || '0') || 0;
     const pageSize = 5; // 페이지당 게시글 수
@@ -56,9 +58,17 @@ export default async function boardListPage({ searchParams }: { searchParams: Se
                                         <tr key={board.id} className="bg-white border-b hover:bg-gray-50">
                                             <td className="text-center py-4 px-4 hidden md:table-cell">{board.id}</td>
                                             <td className="py-4 px-4">
-                                                <Link href={`/board/${board.id}`} className="text-blue-600 hover:underline">
-                                                    {board.boardTitle}
-                                                </Link>
+                                                {board.passWd ?
+                                                    (
+                                                        <Link href={`/board/password/${board.id}`} className="text-blue-600 hover:underline">
+                                                            {board.boardTitle}
+                                                        </Link>
+                                                    ) :
+                                                    (
+                                                        <Link href={`/board/${board.id}`} className="text-blue-600 hover:underline">
+                                                            {board.boardTitle}
+                                                        </Link>
+                                                    )}
                                             </td>
                                             <td className="text-center py-4 px-4 hidden md:table-cell">{board.boardAuthor}</td>
                                             <td className="text-center py-4 px-4 hidden md:table-cell">{board.readCount}</td>
@@ -79,13 +89,8 @@ export default async function boardListPage({ searchParams }: { searchParams: Se
                     {/* 페이징 */}
                     <Pagination basePath="/board" pageNumber={pageNumber} pageSize={pageSize} totalPages={totalPages}></Pagination>
 
-                    {/*글 작성*/}
-                    <div className="p-4 flex justify-end">
-                        <Link href="/board">
-                            <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">글쓰기</button>
-                        </Link>
-                    </div>
-
+                    {/* 글쓰기 버튼 (로그인한 사용자만 표시) */}
+                    <BoardWriteButton></BoardWriteButton>
                 </div>
             </div>
         </>;
@@ -115,11 +120,7 @@ export default async function boardListPage({ searchParams }: { searchParams: Se
                         </table>
                     </div>
                     {/*글 작성*/}
-                    <div className="p-4 flex justify-end">
-                        <Link href="/board/write">
-                            <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">글쓰기</button>
-                        </Link>
-                    </div>
+                    <BoardWriteButton></BoardWriteButton>
                 </div>
             </div>
         </>;

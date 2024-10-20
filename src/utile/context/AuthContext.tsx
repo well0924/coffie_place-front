@@ -32,14 +32,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [sessionId, setSessionId] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState<boolean>(true); 
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const savedSessionId = getCookie("sessionId");
         console.log(savedSessionId);
         if (savedSessionId) {
             setSessionId(savedSessionId as string);
-            fetchCurrentUser(savedSessionId);
-        }
+            fetchCurrentUser(savedSessionId as string);
+        } else {
+            setLoading(false);
+        };
     }, []);
 
     //현재 회원의 정보
@@ -54,12 +58,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 console.log(response.data.data);
                 setUser(response.data.data); //회원의 데이터를 저장.
             } else {
+                setError('Failed to fetch user information');
                 console.log('Failed to fetch user, status not OK');
                 setUser(null);
             }
         } catch (error) {
+            setError('Error fetching user information');
             console.error('현재 회원 정보를 가져오는 중 오류 발생:', error);
             setUser(null);
+        } finally {
+            setLoading(false); // Always stop loading
         }
     };
 
@@ -72,6 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         fetchCurrentUser(newSessionId);
         location.href='/'
     };
+
     //로그아웃
     const logout = () => {
         console.log('log-out');
@@ -82,7 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <AuthContext.Provider value={{ sessionId, user, login, logout }}>
-            {children}
+             {error ? <div>{error}</div> : children}
         </AuthContext.Provider>
     );
 };
