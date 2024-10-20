@@ -1,26 +1,27 @@
-import { handleError } from "@/interface/common";
+import { CommonResponse, handleError } from "@/interface/common";
 import { LoginRequest } from "@/interface/member";
-import exp from "constants";
 import { api } from "../axios";
+import { deleteCookie } from "cookies-next";
 
 //로그인
-export const loginProc = async (login:LoginRequest) :Promise<string> => {
+export const loginProc = async (login:LoginRequest) :Promise<CommonResponse<string>> => {
     try {
-        const loginProc = await api.post(`/member/login`,login,{ headers: {
+        const response = await api.post<CommonResponse<string>>(`/member/login`,login,{ headers: {
             'Content-Type': 'application/json',
         }});
-
-        console.log(loginProc.data);
-        return loginProc.data;
-    } catch(error) {
+        return response.data;
+    } catch(error:any) {
         return handleError(error);
     }
 }
 
-export const logout = async () :Promise<void> => {
+//로그아웃
+export const logoutProc = async () :Promise<void> => {
     try {
-        const logoutProc = await api.post(`/member/logout`);
+        console.log('logout');
+        await api.post(`/member/logout`);
+        deleteCookie("sessionId");
     } catch(error) {
-        return handleError(error);
+        handleError(error);
     }
 }

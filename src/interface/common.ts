@@ -63,7 +63,8 @@ export interface SearchFormProps {
 }
 
 //validate 체크(게시글,공지게시글)
-export const handleError = (error: unknown) => {
+export const handleError = (error: unknown): CommonResponse<string>  => {
+    
     console.error('Error:', error);
 
     if (axios.isAxiosError(error)) {

@@ -1,0 +1,96 @@
+import { createContext, useContext, useState, useEffect } from "react";
+import { getCookie, setCookie, deleteCookie } from 'cookies-next';
+import axios from "axios";
+import { api } from "../api/axios";
+import { Role } from "@/interface/member";
+import { CommonResponse } from "@/interface/common";
+
+
+interface User {
+        id:number;
+        userId: string;
+        memberLat: number;
+        memberLng: number;
+        memberName: string;
+        role:Role;
+        userAge: number;
+        userEmail: string;
+        userGender: string;
+        userPhone: string;
+        httpStatus:string;
+}
+
+interface AuthContextType {
+    sessionId: string | null;
+    user: User | null;
+    login: (sessionId: string) => void;
+    logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const [sessionId, setSessionId] = useState<string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        const savedSessionId = getCookie("sessionId");
+        console.log(savedSessionId);
+        if (savedSessionId) {
+            setSessionId(savedSessionId as string);
+            fetchCurrentUser(savedSessionId);
+        }
+    }, []);
+
+    //현재 회원의 정보
+    const fetchCurrentUser = async (sessionId: string) => {
+        console.log('세션아이디::'+sessionId);
+        try {
+            const response = await api.get<CommonResponse<User>>('/member/current-user', {
+                params: { sessionId }
+            });
+            console.log(response.data.httpStatus);
+            if(response.data.httpStatus === 'OK') {
+                console.log(response.data.data);
+                setUser(response.data.data); //회원의 데이터를 저장.
+            } else {
+                console.log('Failed to fetch user, status not OK');
+                setUser(null);
+            }
+        } catch (error) {
+            console.error('현재 회원 정보를 가져오는 중 오류 발생:', error);
+            setUser(null);
+        }
+    };
+
+    //로그인
+    const login = (newSessionId: string) => {
+        console.log('login');
+        console.log(newSessionId);
+        setSessionId(newSessionId);
+        setCookie("sessionId", newSessionId, { maxAge: 7 * 24 * 60 * 60 });
+        fetchCurrentUser(newSessionId);
+        location.href='/'
+    };
+    //로그아웃
+    const logout = () => {
+        console.log('log-out');
+        setSessionId(null);
+        deleteCookie("sessionId");
+        setUser(null); // 로그아웃 시 사용자 정보 초기화
+    };
+
+    return (
+        <AuthContext.Provider value={{ sessionId, user, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
+};

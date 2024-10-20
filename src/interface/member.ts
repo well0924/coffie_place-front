@@ -39,7 +39,7 @@ export interface memberResponse{
     createdTime:Date;
 }
 
-//로그인 응답
+//로그인 요청
 export interface LoginRequest{
     userId:string;
     password:string;

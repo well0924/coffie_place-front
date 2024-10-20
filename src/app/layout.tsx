@@ -10,6 +10,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import Script from "next/script";
 import CustomErrorBoundary from "../components/ErrorBoundary";
 import ReactQueryProviders from "@/utile/ReactQueryProvider";
+import { AuthProvider } from "@/utile/context/AuthContext";
 
 config.autoAddCss = false;
 
@@ -31,15 +32,17 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} overflow-x-hidden`}>
         <CustomErrorBoundary>
-          <Header />
-          <div className="flex flex-col min-h-screen">
-            <main className="flex-grow pt-8 pb-8 px-4"> {/* 여백 설정 */}
-              <ReactQueryProviders>
-                {children}
-              </ReactQueryProviders>
-            </main>
-            <Footer />
-          </div>
+          <AuthProvider>
+            <Header />
+            <div className="flex flex-col min-h-screen">
+              <main className="flex-grow pt-8 pb-8 px-4"> {/* 여백 설정 */}
+                <ReactQueryProviders>
+                  {children}
+                </ReactQueryProviders>
+              </main>
+              <Footer />
+            </div>
+          </AuthProvider>
         </CustomErrorBoundary>
       </body>
     </html>

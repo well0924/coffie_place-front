@@ -1,6 +1,19 @@
+import { logoutProc } from '@/utile/api/login/loginApi';
+import { useAuth } from '@/utile/context/AuthContext';
 import Link from 'next/link';
 
 export default function headerPage() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { user, logout } = useAuth();
+  
+  console.log(user);
+
+  const handleLogout = async () => {
+    await logoutProc(); // 로그아웃 API 호출
+    logout(); // AuthContext의 logout 호출
+    // 추가적으로 리다이렉트하거나 상태를 업데이트할 수 있음
+    location.href = '/'; // 메인 페이지로 리다이렉트
+  };
 
   return <>
     <nav className="bg-gray-800 text-white fixed top-0 inset-x-0 shadow-lg z-50">
@@ -25,15 +38,27 @@ export default function headerPage() {
           </Link>
         </div>
         <div className="hidden lg:flex space-x-4 ml-auto">
-          <Link href="/member/join" className="hover:bg-gray-700 px-3 py-2 rounded">
-            회원가입
-          </Link>
-          <Link href="/login" className="hover:bg-gray-700 px-3 py-2 rounded">
-            로그인
-          </Link>
-          <Link href="/page/notice/list" className="hover:bg-gray-700 px-3 py-2 rounded">
-            로그아웃
-          </Link>
+          {user ? (
+            <>
+              <span className="hover:bg-gray-700 px-3 py-2 rounded">안녕하세요, {user.userId}님</span>
+              {/**권한에 따른 분기처리**/}
+              {user.role === 'ROLE_ADMIN' ? (
+                <>
+                  <a href="/admin" className="hover:bg-gray-700 px-3 py-2 rounded">어드민 페이지</a>    
+                </>
+              ) : (
+                <>
+                  <a href='/mypage' className="hover:bg-gray-700 px-3 py-2 rounded">마이페이지</a>
+                </>
+              )}
+              <button onClick={handleLogout} className="hover:bg-gray-700 px-3 py-2 rounded">로그아웃</button>
+            </>
+          ) : (
+            <>
+              <a href="/member/join" className="hover:bg-gray-700 px-3 py-2 rounded">회원가입</a>
+              <a href="/login" className="hover:bg-gray-700 px-3 py-2 rounded">로그인</a>
+            </>
+          )}
         </div>
       </div>
     </nav>
