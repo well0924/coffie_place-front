@@ -5,12 +5,12 @@ import { Metadata } from "next";
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import Link from "next/link";
+import ReactQuill, { ReactQuillProps } from "react-quill";
 
 export const metadata: Metadata = {
     title: "공지 게시판 조회 페이지",
     description: "공지 게시판 조회 페이지",
 };
-
 
 export default async function noticeDetailPage({
     params,
@@ -22,7 +22,7 @@ export default async function noticeDetailPage({
     //화면에 필요한 api 
     const notice = await noticeDetail(Number(id));
     const fileList = await noticeBoardAttachList(Number(id));
-    
+
     try {
 
         console.log(notice);
@@ -82,9 +82,10 @@ export default async function noticeDetailPage({
                                     </div>
                                     <div className="mb-6">
                                         <label className="block text-gray-700 font-semibold mb-2">내용</label>
-                                         <p className="bg-gray-100 p-4 rounded-lg text-gray-700">
-                                            {notice.noticeContents}
-                                        </p> 
+                                        <p className="bg-gray-100 p-4 rounded-lg text-gray-700">
+                                             {/* HTML 태그를 제거한 순수 텍스트 출력 */}
+                                             {notice.noticeContents.replace(/<\/?[^>]+(>|$)/g, "")}
+                                        </p>
                                     </div>
                                     <div className="mb-6">
                                         <label className="block text-gray-700 font-semibold mb-2">첨부 파일</label>

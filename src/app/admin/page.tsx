@@ -1,8 +1,6 @@
-import SearchForm from "@/components/common/searchForm";
 import AdminListPage from "@/components/admin/adminPage";
 import { CommonResponse, Page, SearchParams, SearchType } from "@/interface/common";
 import { memberResponse } from "@/interface/member";
-import { memberList, memberSearch } from "@/utile/api/member/memberApi";
 import { Metadata } from "next";
 
 

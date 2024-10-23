@@ -53,7 +53,7 @@ export const getBoardListSearch = async (
             return response;
         }
     } catch (error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -112,7 +112,7 @@ export const createBoard = async (data: BoardRequest, files: File[]): Promise<nu
         return result.data;
 
     } catch (error: unknown) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -138,7 +138,7 @@ export const updateBoard = async (id: number, data: BoardRequest, files: File[])
         return response.data;
     } catch (error: unknown) {
         console.error('Error:', error);
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -150,8 +150,19 @@ export const boardDelete = async (id: number): Promise<void> => {
         return deleteResult.data.data;
     } catch (error: unknown) {//해당 부분은 공통응답 부분을 작성해야됨..
         console.error('Error:', error);
-        return handleError(error);
+        handleError(error);
     }
 }
 
-
+//자유 게시글 비밀번호 확인
+export const boardPasswordConfirm = async(id:number,password:string): Promise<BoardResponse> => {
+    try {
+        const confirmResult = await api.get<CommonResponse<BoardResponse>>(`/board/${id}/${password}`,{withCredentials: true});
+        console.log(confirmResult);
+        const data = confirmResult.data.data;
+        return data;        
+    } catch(error) {
+        console.log(error);
+        throw handleError(error);
+    }
+}

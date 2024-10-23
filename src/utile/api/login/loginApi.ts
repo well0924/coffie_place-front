@@ -6,7 +6,7 @@ import { deleteCookie } from "cookies-next";
 //로그인
 export const loginProc = async (login:LoginRequest) :Promise<CommonResponse<string>> => {
     try {
-        const response = await api.post<CommonResponse<string>>(`/member/login`,login,{ headers: {
+        const response = await api.post<CommonResponse<string>>(`/member/login`,JSON.stringify(login),{ headers: {
             'Content-Type': 'application/json',
         }});
         return response.data;

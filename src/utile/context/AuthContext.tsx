@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getCookie, setCookie, deleteCookie } from 'cookies-next';
-import axios from "axios";
 import { api } from "../api/axios";
 import { Role } from "@/interface/member";
 import { CommonResponse } from "@/interface/common";

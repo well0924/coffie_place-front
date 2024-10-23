@@ -15,15 +15,14 @@ export default function LoginProcPage() {
     const [password, setPassword] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); // 기본 폼 제출 방지
+    const handleLoginProc = async () => {
         setErrorMessage(null); // 에러 메시지 초기화
 
         const loginData: LoginRequest = {
             userId,
             password,
         };
-
+        console.log(loginData);
         try {
             const response = await loginProc(loginData);
             console.log(response);
@@ -57,7 +56,6 @@ export default function LoginProcPage() {
                             {errorMessage && (
                                 <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
                             )}
-                            <form onSubmit={handleSubmit}>
                                 <div className="mb-4">
                                     <label htmlFor="user_id" className="block text-sm font-medium text-gray-700">
                                         아이디
@@ -91,14 +89,16 @@ export default function LoginProcPage() {
                                     <>아이디 비밀번호 찾기</>
                                 </Link>
                                 <div className="mt-6 flex justify-end space-x-4">
-                                    <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                    <button 
+                                    type="button" 
+                                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                                    onClick={handleLoginProc}>
                                         로그인
                                     </button>
                                     <Link href="/member/join" className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
                                         <>회원가입</>
                                     </Link>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>

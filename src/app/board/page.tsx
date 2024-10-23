@@ -4,7 +4,6 @@ import SearchForm from "@/components/common/searchForm";
 import { BoardResponse } from "@/interface/board";
 import { CommonResponse, Page, SearchParams, SearchType } from "@/interface/common";
 import { getBoardList, getBoardListSearch } from "@/utile/api/board/boardApi";
-import { useAuth } from "@/utile/context/AuthContext";
 import { Metadata } from "next";
 import Link from "next/link";
 
