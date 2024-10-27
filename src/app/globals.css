@@ -1,7 +1,11 @@
+/**tail-wind**/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/**slick-css**/
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+/**layout**/
 html, body {
   height: 100%;
   margin: 0;
