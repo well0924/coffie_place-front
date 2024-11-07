@@ -9,7 +9,7 @@ export const boardCommentList = async (boardId:number) :Promise<CommonResponse<c
         const response = await commentList;
         return response.data;
     } catch(error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -20,7 +20,7 @@ export const createBoardComment = async (data:commentRequest,boardId:number) :Pr
         const createResult = await api.post<CommonResponse<number>>(`/comment/${boardId}`,data);
         return createResult.data.data;
     } catch(error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -31,7 +31,7 @@ export const deleteBoardComment = async (id:number) :Promise<void> => {
         const response = await api.delete(`/comment/${id}`);
         return response.data;
     } catch(error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -42,7 +42,7 @@ export const placeCommentList = async (placeId:number) :Promise<commentResponse[
         const response = await api.get<CommonResponse<Slice<commentResponse>>>(`/place/${placeId}`);
         return await response.data.data.content;
     } catch(error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -53,7 +53,7 @@ export const createPlaceComment = async (placeId:number,data:commentRequest) :Pr
         const response = await api.post(`/comment/place/${placeId}`,data);
         return response.data;
     } catch(error) {    
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -63,6 +63,6 @@ export const deletePlaceComment = async (placeId:number,commentId:number) :Promi
         const response = await api.delete(`/comment/place/${placeId}/${commentId}`);
         return response.data;
     } catch(error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }

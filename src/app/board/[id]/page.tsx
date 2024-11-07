@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { Metadata } from "next";
 import Link from "next/link";
+import CommentInput from "@/components/comment/commentInput";
+import CommentListPage from "@/components/comment/commentList";
 
 export const metadata: Metadata = {
     title: "자유 게시판 조회 페이지",
@@ -18,7 +20,7 @@ export default async function boardDetailPage({ params,
 }) {
 
     const { id } = params;
-    
+
     //api 호출 부분
     try {
 
@@ -56,9 +58,8 @@ export default async function boardDetailPage({ params,
                 <div className="flex flex-col">
                     <div className="w-full">
                         <h1 className="text-3xl font-bold mb-6">게시글 열람</h1>
-                        <div id="favoriteCount"></div>
                         {/**게시글 좋아요 수(컴포넌트로 대체하기.)*/}
-                        
+                        <div id="favoriteCount"></div>
                         {/**게시글 조회수 */}
                         <FontAwesomeIcon icon={faEye} />{boardDetail.readCount}
                         <div className="bg-white shadow rounded-lg p-6">
@@ -121,6 +122,7 @@ export default async function boardDetailPage({ params,
                                         좋아요 취소
                                     </button>
                                 </div>
+                                {/*다운로드 링크 수정 */}
                                 <div className="mb-4">
                                     <label className="block text-gray-700 font-bold mb-2">첨부 파일</label>
                                     {boardFileList.length > 0 ? (
@@ -144,9 +146,9 @@ export default async function boardDetailPage({ params,
                                             목록보기
                                         </>
                                     </Link>
-                                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                    <Link href={"/"} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                                         수정하기
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="list-group">
@@ -171,11 +173,11 @@ export default async function boardDetailPage({ params,
                                     </div>
                                 )}
                             </div>
+                            {/*댓글 목록 및 작성부분 */}
+                            <CommentListPage boardId={boardDetail.id}></CommentListPage>
                         </div>
                     </div>
                 </div>
-                {/*댓글 목록 및 작성부분 */}
-                
             </div>
         );
     } catch (error) {
