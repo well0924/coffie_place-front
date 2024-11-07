@@ -55,9 +55,9 @@ export default function ReviewTop5PlacePage({ top5 }: CafeTop5Props) {
                                     <Image
                                         src={getImageSrc(item.thumbFileImagePath)}
                                         alt={item.placeName}
-                                        layout="responsive"
                                         width={100}
                                         height={100}
+                                        priority
                                         className="object-cover w-full h-full"
                                     />
                                 </div>
