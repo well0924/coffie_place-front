@@ -3,6 +3,7 @@
 import { BoardRequest } from '@/interface/board';
 import { createBoard } from '@/utile/api/board/boardApi';
 import { useAuth } from '@/utile/context/AuthContext';
+import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -38,11 +39,11 @@ export default function FreeBoardWritePage() {
     const { user } = useAuth();
     const [boardTitle, setBoardTitle] = useState("");//자유 게시글 제목
     const [boardContents, setBoardContents] = useState("");//자유 게시글 내용
-    const [boardAuthor, setBoardAuthor] = useState("");//자유 게시글 작성자
+    const [boardAuthor] = useState("");//자유 게시글 작성자
     const [passWd, setPassWd] = useState("");//자유 게시글 비밀번호
     const [file, setFile] = useState<File[]>([]);//첨부파일
     const quillRef = useRef<ReactQuill>(null);
-
+   
     //파일 업로드
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -63,7 +64,8 @@ export default function FreeBoardWritePage() {
             passWd,
             fileGroupId: randomId
         }
-
+        console.log(boardAuthor);
+        console.log(data);
         try {
             const response = await createBoard(data,file);
             
