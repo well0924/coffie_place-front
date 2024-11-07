@@ -1,30 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getCookie, setCookie, deleteCookie } from 'cookies-next';
 import { api } from "../api/axios";
-import { Role } from "@/interface/member";
 import { CommonResponse } from "@/interface/common";
-
-
-interface User {
-        id:number;
-        userId: string;
-        memberLat: number;
-        memberLng: number;
-        memberName: string;
-        role:Role;
-        userAge: number;
-        userEmail: string;
-        userGender: string;
-        userPhone: string;
-        httpStatus:string;
-}
-
-interface AuthContextType {
-    sessionId: string | null;
-    user: User | null;
-    login: (sessionId: string) => void;
-    logout: () => void;
-}
+import { User, AuthContextType } from "@/interface/member"
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
