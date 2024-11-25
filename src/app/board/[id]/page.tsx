@@ -8,6 +8,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import CommentInput from "@/components/comment/commentInput";
 import CommentListPage from "@/components/comment/commentList";
+import BoardLike from "@/components/like/BoardLikePlus";
+import BoardLikeMinus from "@/components/like/BoardLikeMinus";
+import BoardLikeCount from "@/components/like/BoardLikeCount";
 
 export const metadata: Metadata = {
     title: "자유 게시판 조회 페이지",
@@ -59,7 +62,7 @@ export default async function boardDetailPage({ params,
                     <div className="w-full">
                         <h1 className="text-3xl font-bold mb-6">게시글 열람</h1>
                         {/**게시글 좋아요 수(컴포넌트로 대체하기.)*/}
-                        <div id="favoriteCount"></div>
+                        <BoardLikeCount boardId={boardDetail.id}></BoardLikeCount>
                         {/**게시글 조회수 */}
                         <FontAwesomeIcon icon={faEye} />{boardDetail.readCount}
                         <div className="bg-white shadow rounded-lg p-6">
@@ -115,12 +118,10 @@ export default async function boardDetailPage({ params,
                                     </p>
                                 </div>
                                 <div className="mb-4 flex space-x-4">
-                                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                        좋아요
-                                    </button>
-                                    <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-                                        좋아요 취소
-                                    </button>
+                                    {/**게시글 좋아요 추가 기능**/}
+                                    <BoardLike boardId={boardDetail.id}></BoardLike>
+                                    {/**게시글 좋아요 감소 기능**/}
+                                    <BoardLikeMinus boardId={boardDetail.id}></BoardLikeMinus>
                                 </div>
                                 {/*다운로드 링크 수정 */}
                                 <div className="mb-4">
