@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { Metadata } from "next";
 import Link from "next/link";
-import CommentInput from "@/components/comment/commentInput";
 import CommentListPage from "@/components/comment/commentList";
 import BoardLike from "@/components/like/BoardLikePlus";
 import BoardLikeMinus from "@/components/like/BoardLikeMinus";

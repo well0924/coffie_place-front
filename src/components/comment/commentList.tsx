@@ -70,16 +70,6 @@ export default function CommentListPage({ boardId }: CommentListProps) {
                                     <label className="font-bold">글 내용:</label>
                                     <p>{comment.replyContents}</p>
                                 </div>
-                                <div className="mb-2">
-                                    <label className="font-bold">평점:</label>
-                                    <span>{comment.replyPoint}</span>
-                                </div>
-                                {comment.liked !== undefined && (
-                                    <div className="mb-2 flex items-center space-x-2">
-                                        <FontAwesomeIcon icon={faThumbsUp} className="text-blue-500" />
-                                        <span>{comment.liked}</span>
-                                    </div>
-                                )}
                                 <div className="text-gray-400 text-sm">
                                     <label className="font-bold">작성 시간:</label>
                                     <span>{new Date(comment.createdTime).toLocaleString("ko-KR")}</span>

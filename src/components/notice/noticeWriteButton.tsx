@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function NoticeWriteButton() {
     const { user } = useAuth();
 
-    return <>(
+    return (<>
         {user?.role == 'ROLE_ADMIN' ? (
             <div className="p-4 flex justify-end">
                 <Link href="/notice/write">
@@ -14,9 +14,10 @@ export default function NoticeWriteButton() {
                 </Link>
             </div>
         ) : (<>
-            
-        </>)
-        }
+                <div>
+                </div>
+            </>
         )
-    </>
+        }
+    </>)
 }

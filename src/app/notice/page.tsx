@@ -80,7 +80,6 @@ export default async function noticeListPage({ searchParams }: { searchParams: S
                     </div>
                     {/*페이징*/}
                     <Pagination basePath="/notice" pageNumber={pageNumber} pageSize={pageSize} totalPages={totalPages}></Pagination>
-
                     {/*글 작성*/}
                     <NoticeWriteButton></NoticeWriteButton>
                 </div>
