@@ -1,25 +1,9 @@
 "use client"
 
-import { memberRequest, Role } from "@/interface/member";
+import { MemberDetailProps, memberRequest, Role } from "@/interface/member";
 import { memberDelete, memberUpdate } from "@/utile/api/member/memberApi";
 import { useState } from "react";
 import AddressSearch from "../common/AddressSearch";
-
-interface MemberDetailProps {
-    id: number;
-    userId: string;
-    password: string;
-    userEmail: string;
-    memberName: string;
-    userAge: string;
-    userGender: string;
-    userPhone: string;
-    memberLat: number;
-    memberLng: number;
-    userAddr1: string;
-    userAddr2: string;
-    role: Role; 
-}
 
 export default function MemberModifyPage({
     id,
@@ -47,7 +31,6 @@ export default function MemberModifyPage({
     const [lat, setLat] = useState<number>(0.0); // 위도
     const [lng, setLng] = useState<number>(0.0); // 경도
     const [userRole,setRole] = useState(role);
-    const [message, setMessage] = useState('');//출력 메시지
 
     //회원성별 
     const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +60,6 @@ export default function MemberModifyPage({
     const updateMember = async (id: number) => {
         const data: memberRequest = {
             userId: username, 
-            password: "", // 비밀번호는 비워두거나 필요시 추가
             memberName: name,
             userPhone: phone,
             userGender: gender,
