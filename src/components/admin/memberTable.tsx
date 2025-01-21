@@ -15,7 +15,7 @@ interface MemberTableProps {
 export default function memberTable({ members, checkedItems, onCheckboxChange, onAllCheckedChange, allChecked }: MemberTableProps) {
     
     return (<>
-            <table className="table-auto w-full text-center border-collapse border border-gray-300">
+            <table className="table-auto w-full text-center border-collapse border border-gray-300 mt-4">
             <thead>
                 <tr className="bg-gray-100">
                     <th className="border border-gray-300 p-2">
