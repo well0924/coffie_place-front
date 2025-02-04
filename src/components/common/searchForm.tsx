@@ -9,10 +9,10 @@ import { memberIdAutoCompleted } from "@/utile/api/member/memberApi";
 export default function SearchForm({ initialSearchType, initialSearchVal, basePath }: SearchFormProps) {
     const [searchType, setSearchType] = useState<SearchType>(initialSearchType);
     const [searchVal, setSearchVal] = useState<string>(initialSearchVal);
-    const [suggestedUserIds, setSuggestedUserIds] = useState<string[]>([]);
+    const [suggestedUserIds, setSuggestedUserIds] = useState<string[]>([]); //회원 아이디 
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
-    // 검색어 자동완성기능
+    // 검색어 자동완성기능(회원)
     const fetchUserIdSuggestions = useCallback(async (query: string) => {
         try {
             if (query) {
@@ -38,7 +38,6 @@ export default function SearchForm({ initialSearchType, initialSearchVal, basePa
     // 자동완성 항목을 선택할 때 처리
     const handleSuggestionClick = (suggestion: string, event: React.MouseEvent) => {
         event.stopPropagation(); // 이벤트 전파 방지
-        console.log("Clicked id:", suggestion); // 클릭한 아이디 출력
         setSearchVal(suggestion); // 선택한 아이디로 searchVal 업데이트
     };
 
@@ -53,7 +52,6 @@ export default function SearchForm({ initialSearchType, initialSearchVal, basePa
         const target = event.target as HTMLElement;
         // 클릭한 요소가 제안 목록에 포함되지 않은 경우에만 숨김
         if (!target.closest(".suggestions") && target.tagName !== "INPUT") {
-            console.log("Clicked outside:", target);
             setShowSuggestions(false);
         }
     };
@@ -67,7 +65,7 @@ export default function SearchForm({ initialSearchType, initialSearchVal, basePa
 
     return (
         <>
-            <div className="flex flex-col md:flex-row mb-6 relative">
+            <div className="flex justify-center items-center w-full max-w-lg mx-auto mt-4">
                 <select
                     value={searchType}
                     onChange={(e) => setSearchType(e.target.value as SearchType)}
@@ -107,8 +105,10 @@ export default function SearchForm({ initialSearchType, initialSearchVal, basePa
                         ))}
                     </ul>
                 )}
+                {/* 가게 최근 검색어 저장 */}
+                
                 <Link
-                    href={`${basePath}?page=0&searchType=${searchType}&searchVal=${searchVal}`}
+                    href={`${basePath}?page=0&size=10&searchType=${searchType}&searchVal=${searchVal}`}
                     className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
                 >
                     검색

@@ -6,11 +6,12 @@ import { api } from "../axios";
 export const placeList = async (
     page: number = 0,
     size: number = 10,
-    placeId: number | null = null): Promise<{ content: placeResponse[]; hasNext: boolean }> => {
+    placeId: number | null = null,
+    sortedType:string ="placeName,DESC"): Promise<{ content: placeResponse[]; hasNext: boolean }> => {
 
     try {
         const listResult = await api.get<CommonResponse<Slice<placeResponse>>>(`/place/`, {
-            params: { page, size, placeId },
+            params: { page, size, placeId,sortedType },
         });
         const { content, last } = listResult.data.data; // API가 Slice로 응답할 경우 last 필드 사용
         return { content, hasNext: !last };
