@@ -15,27 +15,28 @@ export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
 
     const observerRef = useRef<IntersectionObserver | null>(null); // 스크롤 감지를 위한 옵저버
     const lastPlaceRef = useRef<HTMLDivElement | null>(null); // 마지막 아이템 참조
-    const placesRef = useRef<placeResponse[]>([]); // ✅ places 상태를 보존하는 useRef 추가
-    const fetchPlacesRef = useRef<(pageNum: number) => void>(); // ✅ fetchPlaces를 useRef로 저장
+    const placesRef = useRef<placeResponse[]>([]); // places 상태를 보존하는 useRef 추가
+    const fetchPlacesRef = useRef<(pageNum: number) => void>(); // fetchPlaces를 useRef로 저장
 
     // 검색 타입과 검색어
     const searchType = searchParams.searchType || SearchType.ALL;
     const searchVal = searchParams.searchVal || "";
     const sortedType = searchParams.sort || "placeName,DESC"; // 정렬 방식 추가
 
-    // 🔹 데이터 불러오기 함수 (useRef 활용하여 `fetchPlaces`의 의존성 제거)
+    // 데이터 불러오기 함수 (useRef 활용하여 `fetchPlaces`의 의존성 제거)
     const fetchPlaces = useCallback(async (pageNum: number) => {
         if (!hasNext || loading) return;
         setLoading(true);
 
         console.log("Fetching places:", { pageNum, searchType, searchVal, sortedType });
+        console.log(searchVal);
+        console.log(searchType);
 
         try {
             let response;
             if (searchVal) {
                 response = await placeListSearch(searchType, searchVal, pageNum, 10);
             } else {
-                // ✅ 마지막 placeId를 useRef에서 가져옴
                 const lastPlaceId = placesRef.current.length > 0 ? placesRef.current[placesRef.current.length - 1].id : 0;
                 response = await placeList(pageNum, 10, lastPlaceId, sortedType);
             }
@@ -43,7 +44,7 @@ export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
             console.log("Fetched data:", response);
 
             if (response && response.content) {
-                // ✅ 상태를 업데이트하면서 useRef에도 최신 데이터 저장
+                // 상태를 업데이트하면서 useRef에도 최신 데이터 저장
                 setPlaces((prev) => {
                     const updatedPlaces = pageNum === 0 ? response.content : [...prev, ...response.content];
                     placesRef.current = updatedPlaces; // useRef에 저장
@@ -59,20 +60,21 @@ export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
         } finally {
             setLoading(false);
         }
-    }, [hasNext, loading, searchVal, searchType, sortedType]); // ✅ places 제거
+    }, [hasNext, loading, searchVal, searchType, sortedType]); //  places 제거
 
-    // 🔥 `fetchPlacesRef`에 `fetchPlaces` 저장 (의존성 제거 목적)
+    // `fetchPlacesRef`에 `fetchPlaces` 저장 (의존성 제거 목적)
     useEffect(() => {
         fetchPlacesRef.current = fetchPlaces;
     }, [fetchPlaces]);
 
-    // 🔹 검색어 변경 시 목록 초기화
+    // 검색어 변경 시 목록 초기화
     useEffect(() => {
         setPlaces([]); // 목록 초기화
-        placesRef.current = []; // ✅ useRef도 초기화
+        placesRef.current = []; //  useRef도 초기화
         setPage(0); // 페이지 초기화
         setHasNext(true); // 다음 페이지 가능 여부 초기화
-    }, [searchType, searchVal, sortedType]); // 🔥 fetchPlaces 실행 X
+        fetchPlaces(0);
+    }, [searchType, searchVal, sortedType]); // fetchPlaces 실행 X
 
     // 🔹 무한 스크롤 감지 (IntersectionObserver 최적화)
     useEffect(() => {
@@ -94,12 +96,12 @@ export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
         return () => observerRef.current?.disconnect();
     }, [hasNext, loading]);
 
-    // 🔹 페이지 변경 시 데이터 로드 (`fetchPlacesRef.current` 사용하여 의존성 제거)
+    //  페이지 변경 시 데이터 로드 (`fetchPlacesRef.current` 사용하여 의존성 제거)
     useEffect(() => {
         if (fetchPlacesRef.current) {
             fetchPlacesRef.current(page);
         }
-    }, [page]); // ✅ fetchPlaces 자체가 아니라 useRef를 통해 호출
+    }, [page]); // fetchPlaces 자체가 아니라 useRef를 통해 호출
 
     const SERVER_PORTS = [8081, 8082, 8083]; // 사용할 포트 목록
 
@@ -116,8 +118,9 @@ export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
 
     return <>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {places.length === 0 && !loading && <p className="text-center">검색 결과가 없습니다.</p>}
             {places.map((place, index) => (
-                <div key={`${place.id}-${index}`} ref={index === places.length - 1 ? lastPlaceRef : null}  className="col-span-1">
+                <div key={`${place.id}-${index}`} ref={index === places.length - 1 ? lastPlaceRef : null} className="col-span-1">
                     <div className="card bg-white shadow-lg rounded">
                         <div className="card-body p-4">
                             {place.isTitle && (
@@ -148,7 +151,7 @@ export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
                 </div>
             ))}
             {loading && <p className="text-center">Loading...</p>}
-            {!hasNext && <p className="text-center">No more places to show.</p>}
+            {!hasNext && places.length > 0 && <p className="text-center mt-4 text-gray-500">No more places to show.</p>}
         </div>
     </>;
 }

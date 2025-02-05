@@ -1,9 +1,8 @@
-import { CommonResponse, SearchParams, SearchType, Slice } from "@/interface/common";
-import { placeList, placeListSearch, recentSearchDelete, recentSearchList, recentSearchLogDeleteAll } from "@/utile/api/place/placeApi";
 import { Metadata } from "next";
 import Link from 'next/link';
 import SearchForm from "@/components/common/searchForm";
 import { PlaceList } from "@/components/place/placeList";
+import { CommonResponse, Page, SearchParams, SearchType, Slice } from "@/interface/common";
 
 export const metaData: Metadata = {
     title: "가게 목록",
@@ -16,9 +15,6 @@ export default async function PlaceListPage({ searchParams }: { searchParams: Se
     const searchType = searchParams.searchType || SearchType.ALL;
     //검색어
     const searchVal = searchParams.searchVal || '';
-    //최근 검색어 목록
-    const recentSearches = await recentSearchList();
-    console.log(recentSearches);
 
     try {
         
@@ -60,13 +56,13 @@ export default async function PlaceListPage({ searchParams }: { searchParams: Se
                         {/**가게 정렬 버튼**/}
                         <div className="flex justify-end space-x-2 mt-2 mr-2">
                             <Link
-                                href={`/api/place?sort=rating,DESC`}
+                                href= {`/place?sort=rating,DESC`}
                                 className="btn btn-sm bg-gray-200 text-black p-2 rounded hover:bg-gray-300"
                             >
                                 평점순
                             </Link>
                             <Link
-                                href={`/api/place?sort=placeName,DESC`}
+                                href= {`/place?sort=placeName,ASC`}
                                 className="btn btn-sm bg-gray-200 text-black p-2 rounded hover:bg-gray-300"
                             >
                                 가게명순

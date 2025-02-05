@@ -11,57 +11,34 @@ export default function SearchForm({ initialSearchType, initialSearchVal, basePa
     const [searchVal, setSearchVal] = useState<string>(initialSearchVal);
     const [suggestedUserIds, setSuggestedUserIds] = useState<string[]>([]); //회원 아이디 
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+    const [searchKey, setSearchKey] = useState<number>(0); // `Link` 강제 업데이트용 키 값
 
-    // 검색어 자동완성기능(회원)
-    const fetchUserIdSuggestions = useCallback(async (query: string) => {
-        try {
-            if (query) {
-                const response = await memberIdAutoCompleted(query);
-                setSuggestedUserIds(response.data);
-                setShowSuggestions(response.data.length > 0);
-            } else {
-                setSuggestedUserIds([]);
-                setShowSuggestions(false);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }, []);
-
-    // 사용자가 입력할 때마다 자동완성 기능 동작
-    useEffect(() => {
-        if (searchType === SearchType.ALL || searchType === SearchType.USER_ID) {
-            fetchUserIdSuggestions(searchVal);
-        }
-    }, [searchVal, searchType, fetchUserIdSuggestions]);
-
-    // 자동완성 항목을 선택할 때 처리
-    const handleSuggestionClick = (suggestion: string, event: React.MouseEvent) => {
-        event.stopPropagation(); // 이벤트 전파 방지
-        setSearchVal(suggestion); // 선택한 아이디로 searchVal 업데이트
-    };
-
-    useEffect(() => {
-        if (suggestedUserIds.includes(searchVal)) {
-            setShowSuggestions(false); // 선택한 아이디로 searchVal 업데이트 후 제안 목록 숨기기
-        }
-    }, [searchVal, suggestedUserIds]);
-
-    // 클릭 이벤트를 통해 제안 목록 숨기기
-    const handleClickOutside = (event: MouseEvent) => {
-        const target = event.target as HTMLElement;
-        // 클릭한 요소가 제안 목록에 포함되지 않은 경우에만 숨김
-        if (!target.closest(".suggestions") && target.tagName !== "INPUT") {
+    const fetchUserIdSuggestions = async (query: string) => {
+        if (!query.trim()) {
+            setSuggestedUserIds([]);
             setShowSuggestions(false);
+            return;
+        }
+        try {
+            const response = await memberIdAutoCompleted(query);
+            setSuggestedUserIds(response.data);
+            setShowSuggestions(response.data.length > 0);
+        } catch (error) {
+            console.log("자동완성 API 호출 오류:", error);
         }
     };
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    // 🔹 자동완성 항목 선택 시
+    const handleSuggestionClick = (suggestion: string) => {
+        setSearchVal(suggestion);
+        setShowSuggestions(false); // 목록 숨기기
+    };
+
+    // 🔹 검색 버튼 클릭 시 `key` 값을 변경하여 강제 업데이트
+    const handleSearch = () => {
+        if (!searchVal.trim()) return; // 빈 검색어 방지
+        setSearchKey((prev) => prev + 1);
+    };
 
     return (
         <>
@@ -98,7 +75,7 @@ export default function SearchForm({ initialSearchType, initialSearchVal, basePa
                             <li
                                 key={index}
                                 className="p-2 cursor-pointer hover:bg-gray-200"
-                                onClick={(event) => handleSuggestionClick(completedId, event)}
+                                onClick={() => handleSuggestionClick(completedId)}
                             >
                                 {completedId}
                             </li>
@@ -106,10 +83,12 @@ export default function SearchForm({ initialSearchType, initialSearchVal, basePa
                     </ul>
                 )}
                 {/* 가게 최근 검색어 저장 */}
-                
+
                 <Link
+                    key={searchKey}
                     href={`${basePath}?page=0&size=10&searchType=${searchType}&searchVal=${searchVal}`}
                     className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+                    onClick={handleSearch}
                 >
                     검색
                 </Link>

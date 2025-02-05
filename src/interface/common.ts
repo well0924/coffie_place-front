@@ -53,6 +53,7 @@ export interface SearchParams {
     page?: string;
     searchType?: SearchType; // 검색 타입
     searchVal?: string;     // 검색 값
+    sort?: string; //정렬 타입
 }
 
 //검색어 컴포넌트 관련
