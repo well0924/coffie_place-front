@@ -3,11 +3,7 @@ import {useAuth} from "@/utile/context/AuthContext";
 import { loginProc } from "@/utile/api/login/loginApi";
 import Link from "next/link"
 import { useState } from "react";
-
-interface LoginRequest {
-    userId: string;
-    password: string;
-}
+import { LoginRequest } from "@/interface/member";
 
 export default function LoginProcPage() {
     const { login } = useAuth(); // AuthContext에서 login 함수 사용

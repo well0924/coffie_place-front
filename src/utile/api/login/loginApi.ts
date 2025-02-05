@@ -7,8 +7,9 @@ import { deleteCookie } from "cookies-next";
 export const loginProc = async (login:LoginRequest) :Promise<CommonResponse<string>> => {
     try {
         const response = await api.post<CommonResponse<string>>(`/member/login`,JSON.stringify(login),{ headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         }});
+        console.log(response.data);
         return response.data;
     } catch(error:any) {
         return handleError(error);
