@@ -1,20 +1,11 @@
 "use client"
 
+import { CafeTop5Props } from "@/interface/place";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 import Slider from "react-slick";
 // Slick CSS를 해당 컴포넌트에서만 임포트
-
-interface CafeTop5Props {
-    top5: Array<{
-        id: number;
-        placeName: string;
-        placeAddr: string;
-        reviewRate: number;
-        thumbFileImagePath: string | StaticImport;
-    }>;
-}
 
 export default function ReviewTop5PlacePage({ top5 }: CafeTop5Props) {
     // react-slick의 설정
@@ -67,7 +58,7 @@ export default function ReviewTop5PlacePage({ top5 }: CafeTop5Props) {
                                     <div className="text-yellow-500">{item.reviewRate}</div>
                                     <div className="ml-2 text-gray-500 text-sm">/ 5.0</div>
                                 </div>
-                                <Link href={`/page/place/detail/${item.id}`} className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md text-center">
+                                <Link href={`/page/${item.id}`} className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md text-center">
                                     More
                                 </Link>
                             </div>

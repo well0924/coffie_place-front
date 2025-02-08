@@ -1,5 +1,5 @@
 import { CommonResponse, handleError, Page, SearchType, Slice } from "@/interface/common";
-import { PlaceRecentSearch, placeResponse } from "@/interface/place";
+import { placeImageList, PlaceRecentSearch, placeResponse } from "@/interface/place";
 import { api } from "../axios";
 
 //가게 목록
@@ -45,6 +45,16 @@ export const placeDetail = async (id: number): Promise<placeResponse> => {
         const response = await placeResponse.data.data;
         return response;
     } catch (error) {
+        throw handleError(error);
+    }
+}
+
+//가게 이미지 조회 
+export const placeDetailImageList = async (placeId: number): Promise<placeImageList> => {
+    try {
+        const placeImageList = await api.get(`/place/image-list/${placeId}`);
+        return placeImageList.data.data;
+    } catch(error) {
         throw handleError(error);
     }
 }
@@ -99,3 +109,4 @@ export const recentSearchDelete = async (placeName: string): Promise<void> => {
         throw handleError(error);
     }
 }
+

@@ -1,3 +1,4 @@
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 
 export interface placeRequest {
@@ -22,8 +23,8 @@ export interface placeResponse {
     placeStart: string;
     placeClose: string;
     isTitle: string;
-    imgPath: string;
-    thumbFileImagePath: string;
+    imgPath: string | StaticImport;
+    thumbFileImagePath: string | StaticImport;
 }
 
 export interface PlaceRecentSearch {
@@ -35,4 +36,23 @@ export interface LocationType {
     lat?: string | null;
     lng?: string | null;
     zoom?: number;
+}
+
+export interface CafeTop5Props {
+    top5: Array<{
+        id: number;
+        placeName: string;
+        placeAddr: string;
+        reviewRate: number;
+        thumbFileImagePath: string | StaticImport;
+    }>;
+}
+
+export interface placeImageList {
+    images: Array<{
+        id: number | null;
+        imgPath: string | StaticImport;
+        thumbFileImagePath: string | StaticImport;
+        isTitle: string;
+    }>;
 }
