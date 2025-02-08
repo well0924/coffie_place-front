@@ -5,12 +5,21 @@ import { useEffect, useRef } from "react";
 interface KakaoMapProps {
   address: string;
   houseName: string;
+  width: string;
+  height: string;
   onLocationChange?: (lat: number, lng: number) => void;
 }
 
-export default function KakaoMap({ address, houseName, onLocationChange }: KakaoMapProps) {
-  const mapRef = useRef<kakao.maps.Map | null>(null); // 지도 상태를 저장할 ref
-  const markerRef = useRef<kakao.maps.Marker | null>(null); // 마커 상태를 저장할 ref
+export default function KakaoMap({
+  address,
+  houseName,
+  width = "240px",
+  height = "240px",
+  onLocationChange,
+}: KakaoMapProps) {
+  const mapRef = useRef<kakao.maps.Map | null>(null);
+  const markerRef = useRef<kakao.maps.Marker | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement | null>(null); // 🔹 div 요소 참조
 
   useEffect(() => {
     const loadKakaoMapScript = () => {
@@ -21,20 +30,25 @@ export default function KakaoMap({ address, houseName, onLocationChange }: Kakao
       document.head.appendChild(kakaoMapScript);
 
       kakaoMapScript.onload = () => {
-        if (typeof window !== 'undefined' && window.kakao) {
+        if (typeof window !== "undefined" && window.kakao) {
           kakao.maps.load(() => {
-            const mapContainer = document.getElementById("map") as HTMLElement;
-            const mapOptions = {
-              center: new kakao.maps.LatLng(33.450701, 126.570667),
-              level: 3,
-            };
+            if (mapContainerRef.current) {
+              const mapOptions = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3,
+              };
 
-            // 지도를 생성하고, ref에 할당합니다.
-            mapRef.current = new kakao.maps.Map(mapContainer, mapOptions);
+              mapRef.current = new kakao.maps.Map(mapContainerRef.current, mapOptions);
 
-            // 마커를 초기화한 후, 주소가 있으면 주소 검색 및 마커 표시
-            if (address) {
-              updateMapWithAddress(address, houseName);
+              setTimeout(() => {
+                if (mapRef.current) {
+                  kakao.maps.event.trigger(mapRef.current, "resize");
+                }
+              }, 500);
+
+              if (address) {
+                updateMapWithAddress(address, houseName);
+              }
             }
           });
         } else {
@@ -43,22 +57,20 @@ export default function KakaoMap({ address, houseName, onLocationChange }: Kakao
       };
 
       kakaoMapScript.onerror = () => {
-        console.error('Failed to load Kakao Maps API script.');
+        console.error("Failed to load Kakao Maps API script.");
       };
     };
 
     loadKakaoMapScript();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (mapRef.current) {
-      // 지도가 초기화된 후에 주소가 변경되면 지도 업데이트
       updateMapWithAddress(address, houseName);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, houseName]);
 
+  // 🔹 지도를 주소에 맞게 업데이트
   const updateMapWithAddress = (address: string, houseName: string) => {
     if (!mapRef.current) {
       console.error("Map is not initialized yet.");
@@ -66,16 +78,14 @@ export default function KakaoMap({ address, houseName, onLocationChange }: Kakao
     }
 
     const geocoder = new kakao.maps.services.Geocoder();
-
     geocoder.addressSearch(address, (result, status) => {
       if (status === kakao.maps.services.Status.OK && result[0]) {
         const latitude = parseFloat(result[0].y);
         const longitude = parseFloat(result[0].x);
         const coords = new kakao.maps.LatLng(latitude, longitude);
 
-        console.log(`건물의 위경도: ${latitude}, ${longitude}`); // 위경도를 콘솔에 출력
-        
-        // 마커가 없으면 생성하고, 있으면 위치만 업데이트
+        console.log(`건물의 위경도: ${latitude}, ${longitude}`);
+
         if (!markerRef.current) {
           markerRef.current = new kakao.maps.Marker({
             map: mapRef.current!,
@@ -85,7 +95,6 @@ export default function KakaoMap({ address, houseName, onLocationChange }: Kakao
           markerRef.current.setPosition(coords);
         }
 
-        // 인포윈도우 생성 및 표시
         if (mapRef.current && markerRef.current) {
           const infowindow = new kakao.maps.InfoWindow({
             content: `<div style="width:150px;text-align:center;padding:6px 0;">${houseName}</div>`,
@@ -93,12 +102,10 @@ export default function KakaoMap({ address, houseName, onLocationChange }: Kakao
           infowindow.open(mapRef.current, markerRef.current);
         }
 
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        if (mapRef.current) { 
+        if (mapRef.current) {
           mapRef.current.setCenter(coords);
         }
 
-        // onLocationChange가 존재할 때만 호출
         if (onLocationChange) {
           onLocationChange(latitude, longitude);
         }
@@ -107,11 +114,14 @@ export default function KakaoMap({ address, houseName, onLocationChange }: Kakao
       }
     });
   };
-  
+
   return (
     <div>
-      <div id="map" className="w-[240px] h-[240px]" />
+      <div
+        ref={mapContainerRef}
+        className="kakao-map"
+        style={{ width, height, minWidth: "200px", minHeight: "200px" }}
+      />
     </div>
   );
 }
-

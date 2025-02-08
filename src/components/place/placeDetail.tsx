@@ -4,6 +4,8 @@ import { placeImageList, placeResponse } from "@/interface/place";
 import KakaoMap from "../common/kakaoMap";
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import Link from "next/link";
+import { PlaceCommentList } from "../comment/placeCommentList";
 
 interface PlaceDetailProps {
     place: placeResponse;
@@ -39,14 +41,13 @@ export default function PlaceDetail({ place, placeImage }: PlaceDetailProps) {
     };
 
     const imagesArray = Array.isArray(placeImage) ? placeImage : [];
-    
+
     const mainImage = imagesArray.find((img) => img.isTitle === "Y");
-    
+
     const additionalImages = imagesArray.filter((img) => img.isTitle === "N").slice(0, 3);
-    
+
     return (
         <div className="container mx-auto mt-12 p-6">
-            <h1 className="text-2xl font-bold text-center">{place.placeName}</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 {/* 가게 이미지 */}
                 <div className="flex flex-col items-center">
@@ -86,9 +87,11 @@ export default function PlaceDetail({ place, placeImage }: PlaceDetailProps) {
 
                 {/* 가게 상세 정보 */}
                 <div className="bg-white shadow-md rounded-lg p-6">
+                    <h1 className="text-2xl font-bold text-center">{place.placeName}</h1>
+
                     {/* Kakao 지도 */}
                     <div className="mt-8 flex justify-center">
-                        <KakaoMap address={place.placeAddr} houseName={place.placeName} />
+                        <KakaoMap address={place.placeAddr} houseName={place.placeName} width="400px" height="400px" />
                     </div>
                     <p className="text-lg">
                         <strong>주소:</strong> {place.placeAddr}
@@ -103,17 +106,22 @@ export default function PlaceDetail({ place, placeImage }: PlaceDetailProps) {
                     {/* 찜하기 버튼 */}
                     <button
                         className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                        onClick={() => alert("찜하기 기능 추가 예정")}
-                    >
+                        onClick={() => alert("찜하기 기능 추가 예정")}>
                         ❤️ 가게 찜하기
                     </button>
+                    {/* 가게 목록*/}
+                    <Link
+                        href={"/place"}
+                        className="btn btn-primary bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+                    >
+                        가게 목록
+                    </Link>
                 </div>
             </div>
 
-            {/* 댓글 목록 (추후 추가) */}
+            {/* 댓글 목록 */}
             <div className="mt-10">
-                <h2 className="text-xl font-semibold">댓글</h2>
-
+                <PlaceCommentList placeId={place.id}></PlaceCommentList>
             </div>
         </div>
     );

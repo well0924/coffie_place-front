@@ -1,5 +1,5 @@
 import { commentRequest, commentResponse } from "@/interface/comment";
-import { CommonResponse, handleError, Slice } from "@/interface/common";
+import { CommonResponse, handleError, Page, Slice } from "@/interface/common";
 import { api } from "../axios";
 
 //게시글 댓글 목록
@@ -36,11 +36,12 @@ export const deleteBoardComment = async (id:number) :Promise<void> => {
 }
 
 //가게 댓글 목록
-export const placeCommentList = async (placeId:number) :Promise<commentResponse[]> => {
+export const placeCommentList = async (placeId:number) :Promise<CommonResponse<commentResponse[]>> => {
     
     try {
-        const response = await api.get<CommonResponse<Slice<commentResponse>>>(`/place/${placeId}`);
-        return await response.data.data.content;
+        const response = await api.get<CommonResponse<commentResponse[]>>(`/comment/place/${placeId}`);
+        console.log(response);
+        return response.data;
     } catch(error) {
         throw handleError(error);
     }

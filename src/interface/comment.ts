@@ -10,6 +10,7 @@ export interface commentResponse{
     replyWriter:string;
     replyContents:string;
     replyPoint:number;
+    reviewPoint:number;
     liked?:number;//가게 댓글 좋아요.
     createdTime:Date;
 }
