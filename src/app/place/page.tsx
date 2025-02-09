@@ -2,7 +2,8 @@ import { Metadata } from "next";
 import Link from 'next/link';
 import SearchForm from "@/components/common/searchForm";
 import { PlaceList } from "@/components/place/placeList";
-import { CommonResponse, Page, SearchParams, SearchType, Slice } from "@/interface/common";
+import { SearchParams, SearchType } from "@/interface/common";
+import { recentSearchList } from "@/utile/api/place/placeApi";
 
 export const metaData: Metadata = {
     title: "가게 목록",
@@ -16,8 +17,10 @@ export default async function PlaceListPage({ searchParams }: { searchParams: Se
     //검색어
     const searchVal = searchParams.searchVal || '';
 
+    const recentPlaceSearchList = await recentSearchList();
+
     try {
-        
+
         return <>
             <div className="container mx-auto mt-24">
                 <div className="card shadow-lg">
@@ -26,43 +29,17 @@ export default async function PlaceListPage({ searchParams }: { searchParams: Se
                         <div className="relative mb-6">
                             {/**검색어 부분**/}
                             <SearchForm basePath="/place" initialSearchType={searchType} initialSearchVal={searchVal}></SearchForm>
-                            {/**최근 검색어 목록 부분 **/}
-                            <div id="recent_searches" className={0 ? "block" : "hidden mt-2"}>
-                                <div id="recent_search_items" className="flex justify-between items-center border-b border-gray-300 p-2">
-                                    {/* {recentSearches.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="recent-search-item flex justify-between items-center p-2 border-b border-gray-300"
-                                    >
-                                        <span>{item}</span>
-                                        <span
-                                            className="delete-btn text-red-500 cursor-pointer"
-                                            onClick={() =>
-                                                setRecentSearches(
-                                                    recentSearches.filter((_, i) => i !== index)
-                                                )
-                                            }
-                                        >
-                                            X
-                                        </span>
-                                    </div>
-                                ))} */}
-                                </div>
-                                <button className="btn btn-danger bg-red-500 text-white p-2 rounded mt-2">
-                                    전체 삭제
-                                </button>
-                            </div>
                         </div>
                         {/**가게 정렬 버튼**/}
                         <div className="flex justify-end space-x-2 mt-2 mr-2">
                             <Link
-                                href= {`/place?sort=rating,DESC`}
+                                href={`/place?sort=rating,DESC`}
                                 className="btn btn-sm bg-gray-200 text-black p-2 rounded hover:bg-gray-300"
                             >
                                 평점순
                             </Link>
                             <Link
-                                href= {`/place?sort=placeName,ASC`}
+                                href={`/place?sort=placeName,ASC`}
                                 className="btn btn-sm bg-gray-200 text-black p-2 rounded hover:bg-gray-300"
                             >
                                 가게명순
