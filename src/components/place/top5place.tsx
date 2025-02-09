@@ -55,7 +55,7 @@ export default function ReviewTop5PlacePage({ top5 }: CafeTop5Props) {
                                 <h5 className="text-lg font-bold mt-4">{item.placeName}</h5>
                                 <p className="text-sm text-gray-600">{item.placeAddr}</p>
                                 <div className="flex items-center mt-2">
-                                    <div className="text-yellow-500">{item.reviewRate}</div>
+                                    <div className="text-yellow-500">{"★ " + item.reviewRate}</div>
                                     <div className="ml-2 text-gray-500 text-sm">/ 5.0</div>
                                 </div>
                                 <Link href={`/page/${item.id}`} className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md text-center">

@@ -46,6 +46,11 @@ export default function PlaceDetail({ place, placeImage }: PlaceDetailProps) {
 
     const additionalImages = imagesArray.filter((img) => img.isTitle === "N").slice(0, 3);
 
+    {/** 위시리스트 추가하기*/ }
+    const addWishList = () => {
+
+    }
+
     return (
         <div className="container mx-auto mt-12 p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -103,19 +108,23 @@ export default function PlaceDetail({ place, placeImage }: PlaceDetailProps) {
                         <strong>영업시간:</strong> {place.placeStart} ~ {place.placeClose}
                     </p>
 
-                    {/* 찜하기 버튼 */}
-                    <button
-                        className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                        onClick={() => alert("찜하기 기능 추가 예정")}>
-                        ❤️ 가게 찜하기
-                    </button>
-                    {/* 가게 목록*/}
-                    <Link
-                        href={"/place"}
-                        className="btn btn-primary bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                    >
-                        가게 목록
-                    </Link>
+                    <div className="flex justify-center items-center gap-4 mt-4">
+                        {/*  위시 리스트 추가 버튼 */}
+                        <button
+                            className="flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-md text-lg hover:bg-red-600 transition"
+                            onClick={() => alert("위시 리스트에 추가됨!")}
+                        >
+                            ❤️ 위시 리스트 추가
+                        </button>
+
+                        {/* 가게 목록 버튼 */}
+                        <Link
+                            className="bg-blue-500 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-600 transition"
+                            href = {"/place"}
+                        >
+                            가게 목록
+                        </Link>
+                    </div>
                 </div>
             </div>
 

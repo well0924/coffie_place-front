@@ -104,7 +104,7 @@ export default function AddressSearch({ onComplete }: AddressSearchProps) {
             {/* 지도는 상세주소 아래에 위치 */}
             {selectedAddress && (
                 <div className="mb-4">
-                    <KakaoMap address={selectedAddress} houseName={buildingName} onLocationChange={handleMapLocation} />
+                    <KakaoMap address={selectedAddress} houseName={buildingName} onLocationChange={handleMapLocation} width="240px" height="240px"/>
                 </div>
             )}
 

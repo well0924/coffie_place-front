@@ -74,6 +74,7 @@ export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
         setPage(0); // 페이지 초기화
         setHasNext(true); // 다음 페이지 가능 여부 초기화
         fetchPlaces(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchType, searchVal, sortedType]); // fetchPlaces 실행 X
 
     // 🔹 무한 스크롤 감지 (IntersectionObserver 최적화)
@@ -138,14 +139,9 @@ export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
                                 </a>
                             </h5>
                             <p className="text-gray-600">{place.placeAddr}</p>
-                            <div className="RatingStar mt-2">
-                                <div className="RatingScore">
-                                    <div className="outer-star">
-                                        <div className="inner-star"></div>
-                                    </div>
-                                </div>
+                            <div className="flex text-yellow-500">
+                                {"★"+place.reviewRate}
                             </div>
-                            <p className="text-gray-500">{place.reviewRate}</p>
                         </div>
                     </div>
                 </div>
