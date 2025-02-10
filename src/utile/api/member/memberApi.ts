@@ -1,4 +1,4 @@
-import { memberRequest, memberResponse } from "@/interface/member";
+import { memberRequest, memberResponse, User } from "@/interface/member";
 import { api } from "../axios";
 import { CommonResponse, handleError, Page, SearchType } from "@/interface/common";
 
@@ -50,7 +50,7 @@ export const memberSearch = async (
             return response;
         }
     } catch (error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 

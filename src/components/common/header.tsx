@@ -44,7 +44,8 @@ export default function headerPage() {
               {/**권한에 따른 분기처리**/}
               {user.role === 'ROLE_ADMIN' ? (
                 <>
-                  <a href="/admin" className="hover:bg-gray-700 px-3 py-2 rounded">어드민 페이지</a>    
+                  <a href="/admin" className="hover:bg-gray-700 px-3 py-2 rounded">어드민 페이지</a>
+                  <a href='/mypage' className="hover:bg-gray-700 px-3 py-2 rounded">마이페이지</a>    
                 </>
               ) : (
                 <>

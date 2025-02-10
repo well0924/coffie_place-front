@@ -7,7 +7,12 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export function PlaceList({ searchParams }: { searchParams: SearchParams }) {
+interface PlaceListProps {
+    searchParams: SearchParams;
+    userId?: string | null; // 
+}
+
+export function PlaceList({ searchParams, userId }: PlaceListProps) {
     const [places, setPlaces] = useState<placeResponse[]>([]); // 가게 목록
     const [page, setPage] = useState(0); // 페이지 번호
     const [hasNext, setHasNext] = useState(true); // 다음 페이지 존재 여부

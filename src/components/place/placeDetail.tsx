@@ -6,13 +6,20 @@ import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Link from "next/link";
 import { PlaceCommentList } from "../comment/placeCommentList";
+import { useEffect, useState } from "react";
+import { addWish, deleteWish, wishDuplicated } from "@/utile/api/my-page/my-page";
+import { useAuth } from "@/utile/context/AuthContext";
 
 interface PlaceDetailProps {
     place: placeResponse;
     placeImage: placeImageList;
+    userId?: string;
 }
 
-export default function PlaceDetail({ place, placeImage }: PlaceDetailProps) {
+export default function PlaceDetail({ place, placeImage, userId }: PlaceDetailProps) {
+    const [isWishListed, setIsWishListed] = useState<boolean>(false);
+    const { user } = useAuth();
+    const [loading, setLoading] = useState<boolean>(true);
 
     const SERVER_PORTS = [8081, 8082, 8083]; // 사용할 포트 목록
 
@@ -47,9 +54,43 @@ export default function PlaceDetail({ place, placeImage }: PlaceDetailProps) {
     const additionalImages = imagesArray.filter((img) => img.isTitle === "N").slice(0, 3);
 
     {/** 위시리스트 추가하기*/ }
-    const addWishList = () => {
+    useEffect(() => {
+        if (!user?.userId) return;// 로그인 안 한 경우, 위시리스트 확인 생략
 
-    }
+        const checkWishList = async () => {
+            try {
+                const exists = await wishDuplicated(user.userId, place.id);
+                setIsWishListed(exists);
+            } catch (error) {
+                console.error("위시리스트 중복 확인 실패:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkWishList();
+    }, [user, place.id]);
+
+    const handleWishToggle = async () => {
+        if (!user) {
+            alert("위시리스트를 사용하려면 로그인해야 합니다.");
+            return;
+        }
+
+        try {
+            if (isWishListed) {
+                await deleteWish(place.id);
+                setIsWishListed(false);
+                alert("위시리스트에서 제거되었습니다.");
+            } else {
+                await addWish(place.id, user.userId);
+                setIsWishListed(true);
+                alert("위시리스트에 추가되었습니다.");
+            }
+        } catch (error) {
+            console.error("위시리스트 변경 실패:", error);
+        }
+    };
+    console.log(isWishListed);
 
     return (
         <div className="container mx-auto mt-12 p-6">
@@ -111,16 +152,17 @@ export default function PlaceDetail({ place, placeImage }: PlaceDetailProps) {
                     <div className="flex justify-center items-center gap-4 mt-4">
                         {/*  위시 리스트 추가 버튼 */}
                         <button
-                            className="flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-md text-lg hover:bg-red-600 transition"
-                            onClick={() => alert("위시 리스트에 추가됨!")}
+                            className={`flex items-center gap-2 px-6 py-3 rounded-md text-lg transition ${isWishListed ?  "bg-red-500 text-white hover:bg-red-600" : "bg-gray-400 text-white"}`}
+                            onClick={handleWishToggle}
+                            disabled={loading} // 로딩 중일 때 비활성화
                         >
-                            ❤️ 위시 리스트 추가
+                            {isWishListed ? "❤️ 위시 리스트 추가"  : "✔ 위시리스트에 있음"}
                         </button>
 
                         {/* 가게 목록 버튼 */}
                         <Link
                             className="bg-blue-500 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-600 transition"
-                            href = {"/place"}
+                            href={"/place"}
                         >
                             가게 목록
                         </Link>

@@ -3,7 +3,8 @@ import Link from 'next/link';
 import SearchForm from "@/components/common/searchForm";
 import { PlaceList } from "@/components/place/placeList";
 import { SearchParams, SearchType } from "@/interface/common";
-import { recentSearchList } from "@/utile/api/place/placeApi";
+import { getServerUser } from "@/utile/api/member/serverUser";
+
 
 export const metaData: Metadata = {
     title: "가게 목록",
@@ -16,11 +17,11 @@ export default async function PlaceListPage({ searchParams }: { searchParams: Se
     const searchType = searchParams.searchType || SearchType.ALL;
     //검색어
     const searchVal = searchParams.searchVal || '';
-
-    const recentPlaceSearchList = await recentSearchList();
+    
+    const user = await getServerUser();
 
     try {
-
+        
         return <>
             <div className="container mx-auto mt-24">
                 <div className="card shadow-lg">
@@ -60,7 +61,7 @@ export default async function PlaceListPage({ searchParams }: { searchParams: Se
                             </button>
                         </div>
                         {/**가게 목록**/}
-                        <PlaceList searchParams={searchParams} ></PlaceList>
+                        <PlaceList searchParams={searchParams} userId={user?.userId || ""}></PlaceList>
                     </div>
                 </div>
             </div>
