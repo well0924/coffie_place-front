@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 
 //공통응답 관련
 export interface CommonResponse<T> {
+    length: number;
     status: number;
     message?: string;
     data: T;

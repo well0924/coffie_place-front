@@ -3,11 +3,14 @@ import { api } from "../axios";
 import { BoardResponse } from "@/interface/board";
 import { commentResponse } from "@/interface/comment";
 import { placeResponse } from "@/interface/place";
+import { CommonResponse, Page } from "@/interface/common";
 
 //위시 리스트 목록
-export const wishPlaceLists = async (userId:string) :Promise<wishPlaceList> => {
+export const wishPlaceLists = async (userId:string, page: number = 0, size: number = 5) :Promise<CommonResponse<Page<wishPlaceList>>> => {
     try{
-        const wishList = await api.get(`/my-page/${userId}`);
+        const wishList = await api.get<CommonResponse<Page<wishPlaceList>>>(`/my-page/${userId}`, {
+            params: { page, size }
+        });
         return wishList.data;
     }catch (error) {
         console.log(error);

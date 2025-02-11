@@ -77,7 +77,8 @@ export default function PlaceDetail({ place, placeImage, userId }: PlaceDetailPr
         }
 
         try {
-            if (isWishListed) {
+            if (isWishListed===true) {
+                console.log(isWishListed);
                 await deleteWish(place.id);
                 setIsWishListed(false);
                 alert("위시리스트에서 제거되었습니다.");
@@ -156,7 +157,7 @@ export default function PlaceDetail({ place, placeImage, userId }: PlaceDetailPr
                             onClick={handleWishToggle}
                             disabled={loading} // 로딩 중일 때 비활성화
                         >
-                            {isWishListed ? "❤️ 위시 리스트 추가"  : "✔ 위시리스트에 있음"}
+                            {isWishListed === true ?"✔ 위시리스트에 있음":"❤️ 위시 리스트 추가" }
                         </button>
 
                         {/* 가게 목록 버튼 */}

@@ -27,7 +27,7 @@ export const getNoticeList = async (
         }
     } catch (error) {
         console.log(error);
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -55,7 +55,7 @@ export const noticeListSearch = async (
             return response;
         }
     } catch (error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -66,7 +66,7 @@ export const noticeDetail = async (id: number): Promise<noticeResponse> => {
         return await response.data.data;
     } catch (error) {
         console.log(error);
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -109,7 +109,7 @@ export const noticeCreate = async (data: noticeRequest, files: File[]): Promise<
         return await response.data;
     } catch (error) {
         console.log(error);
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -131,7 +131,7 @@ export const noticeUpdate = async (id: number, data: noticeRequest, files: File[
         const response = updateResponse.data;
         return response.data;
     } catch (error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }
 
@@ -141,6 +141,6 @@ export const noticeDelete = async (id: number): Promise<void> => {
         const response = await api.delete(`/notice/${id}`);
         return await response.data;
     } catch (error) {
-        return handleError(error);
+        throw handleError(error);
     }
 }

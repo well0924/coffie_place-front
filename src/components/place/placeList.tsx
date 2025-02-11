@@ -33,10 +33,6 @@ export function PlaceList({ searchParams, userId }: PlaceListProps) {
         if (!hasNext || loading) return;
         setLoading(true);
 
-        console.log("Fetching places:", { pageNum, searchType, searchVal, sortedType });
-        console.log(searchVal);
-        console.log(searchType);
-
         try {
             let response;
             if (searchVal) {
@@ -45,9 +41,7 @@ export function PlaceList({ searchParams, userId }: PlaceListProps) {
                 const lastPlaceId = placesRef.current.length > 0 ? placesRef.current[placesRef.current.length - 1].id : 0;
                 response = await placeList(pageNum, 10, lastPlaceId, sortedType);
             }
-
-            console.log("Fetched data:", response);
-
+            
             if (response && response.content) {
                 // 상태를 업데이트하면서 useRef에도 최신 데이터 저장
                 setPlaces((prev) => {
@@ -82,7 +76,7 @@ export function PlaceList({ searchParams, userId }: PlaceListProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchType, searchVal, sortedType]); // fetchPlaces 실행 X
 
-    // 🔹 무한 스크롤 감지 (IntersectionObserver 최적화)
+    // 무한 스크롤 감지 (IntersectionObserver 최적화)
     useEffect(() => {
         if (observerRef.current) observerRef.current.disconnect();
 
