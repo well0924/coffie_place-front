@@ -56,7 +56,7 @@ export const deleteWish = async (placeId:number) :Promise<void> => {
 export const getUserPosts = async (userId:string) :Promise<BoardResponse[]> => {
     try {
         const userPostsList = await api.get(`/my-page/contents/${userId}`);
-        return userPostsList.data.contents;
+        return userPostsList.data.data.content;
     } catch(error) {
         console.log(error);
         throw error;
@@ -66,8 +66,13 @@ export const getUserPosts = async (userId:string) :Promise<BoardResponse[]> => {
 //로그인한 회원이 작성한 댓글
 export const getUserComments = async (userId:string) :Promise<commentResponse[]> => {
     try {
-        const userPostsList = await api.get(`/my-page/comment/${userId}`);
-        return userPostsList.data;
+        const response = await api.get<CommonResponse<commentResponse[]>>(`/my-page/comment/${userId}`);
+
+        console.log("📌 API 응답:", response.data); // API 응답 확인
+        console.log("📌 댓글 데이터:", response.data?.data); // 댓글 목록 확인
+
+        // API 응답이 정상적인 경우, 데이터 반환
+        return response.data?.data ?? [];
     } catch(error) {
         console.log(error);
         throw error;
