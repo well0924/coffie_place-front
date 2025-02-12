@@ -117,36 +117,46 @@ export function PlaceList({ searchParams, userId }: PlaceListProps) {
     };
 
     return <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {places.length === 0 && !loading && <p className="text-center">검색 결과가 없습니다.</p>}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {/* 검색 결과 없음 */}
+            {places.length === 0 && !loading && <p className="text-center col-span-full text-gray-500">검색 결과가 없습니다.</p>}
+
+            {/* 장소 목록 */}
             {places.map((place, index) => (
                 <div key={`${place.id}-${index}`} ref={index === places.length - 1 ? lastPlaceRef : null} className="col-span-1">
-                    <div className="card bg-white shadow-lg rounded">
-                        <div className="card-body p-4">
-                            {place.isTitle && (
-                                <Image
-                                    src={getImageSrc(place.thumbFileImagePath)}
-                                    alt={"place Main Image"}
-                                    width={100}
-                                    height={100}
-                                    className="w-full h-48 object-cover rounded"
-                                />
-                            )}
-                            <h5 className="text-lg font-semibold mt-4">
+                    <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                        {/* 장소 이미지 */}
+                        {place.isTitle && (
+                            <Image
+                                src={getImageSrc(place.thumbFileImagePath)}
+                                alt="place Main Image"
+                                width={300}
+                                height={200}
+                                className="w-full h-48 md:h-56 object-cover"
+                            />
+                        )}
+                        
+                        {/* 장소 정보 */}
+                        <div className="p-4">
+                            <h5 className="text-sm md:text-lg font-semibold">
                                 <a href={`/place/${place.id}`} className="text-blue-600 hover:underline">
                                     {place.placeName}
                                 </a>
                             </h5>
-                            <p className="text-gray-600">{place.placeAddr}</p>
-                            <div className="flex text-yellow-500">
-                                {"★"+place.reviewRate}
+                            <p className="text-xs md:text-sm text-gray-600">{place.placeAddr}</p>
+                            <div className="flex text-yellow-500 text-sm md:text-base mt-2">
+                                {"★ " + place.reviewRate}
                             </div>
                         </div>
                     </div>
                 </div>
             ))}
-            {loading && <p className="text-center">Loading...</p>}
-            {!hasNext && places.length > 0 && <p className="text-center mt-4 text-gray-500">No more places to show.</p>}
+
+            {/* 로딩 메시지 */}
+            {loading && <p className="text-center col-span-full text-gray-500">Loading...</p>}
+
+            {/* 더 이상 데이터 없음 */}
+            {!hasNext && places.length > 0 && <p className="text-center col-span-full text-gray-500">No more places to show.</p>}
         </div>
     </>;
 }

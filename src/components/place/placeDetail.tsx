@@ -77,7 +77,7 @@ export default function PlaceDetail({ place, placeImage, userId }: PlaceDetailPr
         }
 
         try {
-            if (isWishListed===true) {
+            if (isWishListed === true) {
                 console.log(isWishListed);
                 await deleteWish(place.id);
                 setIsWishListed(false);
@@ -94,8 +94,8 @@ export default function PlaceDetail({ place, placeImage, userId }: PlaceDetailPr
     console.log(isWishListed);
 
     return (
-        <div className="container mx-auto mt-12 p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <div className="container mx-auto mt-6 p-4 md:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* 가게 이미지 */}
                 <div className="flex flex-col items-center">
                     {mainImage ? (
@@ -104,27 +104,26 @@ export default function PlaceDetail({ place, placeImage, userId }: PlaceDetailPr
                             alt="대표 이미지"
                             width={500}
                             height={300}
-                            className="rounded-lg shadow-lg"
+                            className="rounded-lg shadow-lg object-cover w-full max-w-md md:max-w-full"
                             onClick={() => handleImageClick(getImageSrc(mainImage.thumbFileImagePath))}
                         />
                     ) : (
-                        <div className="w-[500px] h-[300px] bg-gray-200 flex items-center justify-center rounded-lg">
+                        <div className="w-full max-w-md md:max-w-full h-48 md:h-64 bg-gray-200 flex items-center justify-center rounded-lg">
                             이미지 없음
                         </div>
                     )}
+
                     {/* 추가 이미지 3개 */}
                     {additionalImages.length > 0 && (
-                        <div className="mt-8 flex justify-center space-x-4">
+                        <div className="mt-4 flex flex-wrap justify-center gap-2 md:gap-4">
                             {additionalImages.map((img, index) => (
                                 <Image
                                     key={index}
-                                    src={getImageSrc(img.
-                                        thumbFileImagePath
-                                    )}
+                                    src={getImageSrc(img.thumbFileImagePath)}
                                     alt={`추가 이미지 ${index + 1}`}
-                                    width={150}
-                                    height={100}
-                                    className="rounded-lg shadow-sm"
+                                    width={120}
+                                    height={80}
+                                    className="rounded-lg shadow-sm object-cover"
                                     onClick={() => handleImageClick(getImageSrc(img.thumbFileImagePath))}
                                 />
                             ))}
@@ -133,36 +132,38 @@ export default function PlaceDetail({ place, placeImage, userId }: PlaceDetailPr
                 </div>
 
                 {/* 가게 상세 정보 */}
-                <div className="bg-white shadow-md rounded-lg p-6">
-                    <h1 className="text-2xl font-bold text-center">{place.placeName}</h1>
+                <div className="bg-white shadow-md rounded-lg p-4 md:p-6">
+                    <h1 className="text-xl md:text-2xl font-bold text-center">{place.placeName}</h1>
 
                     {/* Kakao 지도 */}
-                    <div className="mt-8 flex justify-center">
-                        <KakaoMap address={place.placeAddr} houseName={place.placeName} width="400px" height="400px" />
+                    <div className="mt-4 md:mt-8 flex justify-center">
+                        <KakaoMap address={place.placeAddr} houseName={place.placeName} width="100%" height="300px" />
                     </div>
-                    <p className="text-lg">
+
+                    <p className="text-sm md:text-lg mt-4">
                         <strong>주소:</strong> {place.placeAddr}
                     </p>
-                    <p className="text-lg">
+                    <p className="text-sm md:text-lg">
                         <strong>전화번호:</strong> {place.placePhone || "정보 없음"}
                     </p>
-                    <p className="text-lg">
+                    <p className="text-sm md:text-lg">
                         <strong>영업시간:</strong> {place.placeStart} ~ {place.placeClose}
                     </p>
 
-                    <div className="flex justify-center items-center gap-4 mt-4">
-                        {/*  위시 리스트 추가 버튼 */}
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-4">
+                        {/* 위시 리스트 추가 버튼 */}
                         <button
-                            className={`flex items-center gap-2 px-6 py-3 rounded-md text-lg transition ${isWishListed ?  "bg-red-500 text-white hover:bg-red-600" : "bg-gray-400 text-white"}`}
+                            className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-md text-sm md:text-lg transition ${isWishListed ? "bg-red-500 text-white hover:bg-red-600" : "bg-gray-400 text-white"
+                                }`}
                             onClick={handleWishToggle}
                             disabled={loading} // 로딩 중일 때 비활성화
                         >
-                            {isWishListed === true ?"✔ 위시리스트에 있음":"❤️ 위시 리스트 추가" }
+                            {isWishListed ? "✔ 위시리스트에 있음" : "❤️ 위시 리스트 추가"}
                         </button>
 
                         {/* 가게 목록 버튼 */}
                         <Link
-                            className="bg-blue-500 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-600 transition"
+                            className="bg-blue-500 text-white px-4 md:px-6 py-2 md:py-3 rounded-md text-sm md:text-lg hover:bg-blue-600 transition text-center"
                             href={"/place"}
                         >
                             가게 목록
@@ -172,8 +173,8 @@ export default function PlaceDetail({ place, placeImage, userId }: PlaceDetailPr
             </div>
 
             {/* 댓글 목록 */}
-            <div className="mt-10">
-                <PlaceCommentList placeId={place.id}></PlaceCommentList>
+            <div className="mt-6 md:mt-10">
+                <PlaceCommentList placeId={place.id} />
             </div>
         </div>
     );

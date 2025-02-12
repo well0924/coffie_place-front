@@ -155,39 +155,46 @@ export default function MemberSignForm() {
 
     return <>
         <div className="flex-grow">
-            <div className="container mx-auto mt-2">
+            <div className="container mx-auto mt-4 px-4">
                 <div className="flex justify-center">
-                    <div className="w-full max-w-md ">
-                        <div className="card shadow-lg rounded-lg overflow-auto m-6">
-                            <div className="bg-gray-800 text-white text-center py-4">
-                                <h2 className="text-xl font-semibold">회원가입</h2>
+                    <div className="w-full sm:w-[450px] md:w-[600px] lg:w-[700px]">
+                        <div className="shadow-lg rounded-lg overflow-hidden bg-white">
+                            {/* 헤더 */}
+                            <div className="bg-gray-800 text-white text-center py-3 sm:py-4">
+                                <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">회원가입</h2>
                             </div>
-                            <div className="p-6">
+
+                            {/* 본문 */}
+                            <div className="p-4 sm:p-6">
                                 <form onSubmit={handleSubmit}>
                                     {/* 아이디 */}
                                     <MemberIdCheck onIdCheck={handleDuplicatedCheck} />
+
                                     {/* 비밀번호 */}
                                     <div className="mb-4">
-                                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">비밀번호</label>
+                                        <label htmlFor="password" className="block text-sm sm:text-base font-medium text-gray-700">
+                                            비밀번호
+                                        </label>
                                         <input
                                             type="password"
                                             id="password"
                                             name="password"
-                                            className="form-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                                            className="mt-1 block w-full px-3 py-2 sm:py-3 border border-gray-300 rounded-md shadow-sm text-sm sm:text-base"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             required
                                         />
-                                        <label htmlFor="passwordConfirm" className="block text-sm font-medium text-gray-700 mt-4">비밀번호 확인</label>
+                                        <label htmlFor="passwordConfirm" className="block text-sm sm:text-base font-medium text-gray-700 mt-3">
+                                            비밀번호 확인
+                                        </label>
                                         <input
                                             type="password"
                                             id="passwordConfirm"
                                             name="passwordConfirm"
-                                            className="form-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                                            className="mt-1 block w-full px-3 py-2 sm:py-3 border border-gray-300 rounded-md shadow-sm text-sm sm:text-base"
                                             value={passwordConfirm}
                                             onChange={(e) => {
                                                 setPasswordConfirm(e.target.value);
-                                                // 비밀번호 확인 입력 시 일치 여부 체크
                                                 setIsPasswordMatch(password === e.target.value);
                                             }}
                                             required
@@ -195,83 +202,67 @@ export default function MemberSignForm() {
                                     </div>
 
                                     {/* 비밀번호 일치 여부 메시지 */}
-                                    <div id="passwordValidation" className={`text-sm mb-4 ${isPasswordMatch === false ? 'text-red-600' : isPasswordMatch === true ? 'text-blue-600' : 'text-gray-600'}`}>
+                                    <div className={`text-sm mb-4 ${isPasswordMatch === false ? 'text-red-600' : 'text-gray-600'}`}>
                                         {isPasswordMatch === false && '비밀번호가 일치하지 않습니다.'}
                                     </div>
 
                                     {/* 이름 */}
                                     <div className="mb-4">
-                                        <label htmlFor="member_name" className="block text-sm font-medium text-gray-700">
+                                        <label htmlFor="member_name" className="block text-sm sm:text-base font-medium text-gray-700">
                                             이름
                                         </label>
                                         <input
                                             type="text"
                                             id="member_name"
                                             name="memberName"
-                                            className="form-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            className="mt-1 block w-full px-3 py-2 sm:py-3 border border-gray-300 rounded-md shadow-sm text-sm sm:text-base"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
                                     </div>
-                                    <div id="valid_memberName" className="text-sm text-red-600 mb-4">
-                                        {message}
-                                    </div>
 
                                     {/* 나이 */}
                                     <div className="mb-4">
-                                        <label htmlFor="user_age" className="block text-sm font-medium text-gray-700">
+                                        <label htmlFor="user_age" className="block text-sm sm:text-base font-medium text-gray-700">
                                             나이
                                         </label>
                                         <input
                                             type="text"
                                             id="user_age"
                                             name="userAge"
-                                            className="form-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            className="mt-1 block w-full px-3 py-2 sm:py-3 border border-gray-300 rounded-md shadow-sm text-sm sm:text-base"
                                             value={age}
                                             onChange={(e) => setAge(e.target.value)}
                                         />
                                     </div>
-                                    <div id="valid_userAge" className="text-sm text-red-600 mb-4">
-                                        {message}
-                                    </div>
 
                                     {/* 성별 */}
                                     <div className="mb-4">
-                                        <label className="block text-sm font-medium text-gray-700">성별</label>
-                                        <div className="mt-2">
-                                            <div className="inline-flex items-center">
+                                        <label className="block text-sm sm:text-base font-medium text-gray-700">성별</label>
+                                        <div className="flex space-x-6 mt-2">
+                                            <label className="inline-flex items-center">
                                                 <input
                                                     type="checkbox"
-                                                    id="genderMale"
                                                     name="userGender"
                                                     value="남성"
                                                     checked={gender.includes('남성')}
                                                     onChange={handleGenderChange}
-                                                    className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                                                    className="h-4 w-4 text-indigo-600"
                                                 />
-                                                <label htmlFor="genderMale" className="ml-2 block text-sm leading-5 text-gray-700">
-                                                    남성
-                                                </label>
-                                            </div>
-                                            <div className="inline-flex items-center ml-6">
+                                                <span className="ml-2 text-sm sm:text-base">남성</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
                                                 <input
                                                     type="checkbox"
-                                                    id="genderFemale"
                                                     name="userGender"
                                                     value="여성"
                                                     checked={gender.includes('여성')}
                                                     onChange={handleGenderChange}
-                                                    className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                                                    className="h-4 w-4 text-indigo-600"
                                                 />
-                                                <label htmlFor="genderFemale" className="ml-2 block text-sm leading-5 text-gray-700">
-                                                    여성
-                                                </label>
-                                            </div>
+                                                <span className="ml-2 text-sm sm:text-base">여성</span>
+                                            </label>
                                         </div>
-                                    </div>
-
-                                    <div id="valid_userGender" className="text-sm text-red-600 mb-4">
-                                        {message}
                                     </div>
 
                                     {/* 이메일 */}
@@ -279,44 +270,35 @@ export default function MemberSignForm() {
 
                                     {/* 전화번호 */}
                                     <div className="mb-4">
-                                        <label htmlFor="user_phone" className="block text-sm font-medium text-gray-700">
+                                        <label htmlFor="user_phone" className="block text-sm sm:text-base font-medium text-gray-700">
                                             전화번호
                                         </label>
                                         <input
                                             type="text"
                                             id="user_phone"
                                             name="userPhone"
-                                            className="form-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            className="mt-1 block w-full px-3 py-2 sm:py-3 border border-gray-300 rounded-md shadow-sm text-sm sm:text-base"
                                             value={phone}
-                                            onChange={(e) => { setPhone(e.target.value) }}
+                                            onChange={(e) => setPhone(e.target.value)}
                                         />
                                     </div>
-                                    <div id="valid_userPhone" className="text-sm text-red-600 mb-4">
-                                        {message}
-                                    </div>
 
-                                    <div>
-                                        {/* 주소 */}
-                                        <div className="mb-4">
-                                            <div className="flex items-center">
-                                                <div className="ml-3 mt-1">
-                                                    <AddressSearch
-                                                        onComplete={handleAddressComplete}
-                                                        address={""}
-                                                        addressType={""}
-                                                        bname={""}
-                                                        buildingName={""}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
+                                    {/* 주소 */}
+                                    <div className="mb-4">
+                                        <AddressSearch
+                                            onComplete={handleAddressComplete}
+                                            address={""}
+                                            addressType={""}
+                                            bname={""}
+                                            buildingName={""}
+                                        />
                                     </div>
 
                                     {/* 회원가입 버튼 */}
                                     <div className="mt-6 text-right">
                                         <button
                                             type="button"
-                                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                                            className="px-4 sm:px-5 md:px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                                             onClick={handleSubmit}
                                         >
                                             회원가입

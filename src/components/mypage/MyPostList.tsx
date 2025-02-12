@@ -34,14 +34,14 @@ export default function MyGetUserBoardList() {
     }
 
     return <>
-        <div className="md:col-span-3 bg-white p-6 shadow rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">내가 작성한 글</h2>
+         <div className="md:col-span-3 bg-white p-6 shadow rounded-lg">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">내가 작성한 글</h2>
 
             {loading ? (
                 <p className="text-center text-gray-500">로딩 중...</p>
             ) : posts.length > 0 ? (
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-300">
+                    <table className="min-w-full bg-white border border-gray-300 text-sm sm:text-base">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-4 py-2 text-center hidden md:table-cell">글번호</th>
@@ -52,7 +52,7 @@ export default function MyGetUserBoardList() {
                         </thead>
                         <tbody>
                             {posts.map((post) => (
-                                <tr key={post.id} className="border-b">
+                                <tr key={post.id} className="border-b hover:bg-gray-50">
                                     <td className="px-4 py-2 text-center hidden md:table-cell">{post.id}</td>
                                     <td className="px-4 py-2">
                                         <Link
@@ -79,8 +79,12 @@ export default function MyGetUserBoardList() {
                 <p className="text-center text-gray-500 mt-4">조회된 게시글이 없습니다.</p>
             )}
 
-            <div className="mt-6">
-                <Link href="/" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+            {/* 메인으로 가기 버튼 */}
+            <div className="mt-6 flex justify-center">
+                <Link
+                    href="/"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-sm sm:text-base"
+                >
                     메인으로 가기
                 </Link>
             </div>

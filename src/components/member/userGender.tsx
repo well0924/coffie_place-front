@@ -19,29 +19,29 @@ export default function UserGender({ initialGender = '', onChange }: UserGenderP
 
     return (
         <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">성별</label>
-            <div className="mt-2 flex items-center">
-                <label className="mr-4">
+            <label className="block text-sm sm:text-base font-medium text-gray-700">성별</label>
+            <div className="mt-2 sm:mt-3 flex flex-wrap items-center gap-4">
+                <label className="inline-flex items-center">
                     <input
                         type="checkbox"
-                        className="mr-2"
+                        className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600"
                         name="userGender"
                         value="남성"
                         checked={gender === '남성'}
                         onChange={() => handleGenderChange('남성')}
                     />
-                    남성
+                    <span className="ml-2 text-sm sm:text-base">남성</span>
                 </label>
-                <label>
+                <label className="inline-flex items-center">
                     <input
                         type="checkbox"
-                        className="mr-2"
+                        className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600"
                         name="userGender"
                         value="여성"
                         checked={gender === '여성'}
                         onChange={() => handleGenderChange('여성')}
                     />
-                    여성
+                    <span className="ml-2 text-sm sm:text-base">여성</span>
                 </label>
             </div>
         </div>

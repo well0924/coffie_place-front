@@ -41,7 +41,7 @@ export default function CommentListPage({ boardId }: CommentListProps) {
             await deleteBoardComment(boardId);
             setComments((prevComments) =>
                 prevComments.filter((comment) => comment.id !== commentId));
-            alert("댓글이 삭제되었습니다.");            
+            alert("댓글이 삭제되었습니다.");
         } catch (error) {
             console.log(error);
         }

@@ -34,44 +34,52 @@ export default function MyGetUserCommentList() {
     }
 
     return <>
-        <div className="md:col-span-3 bg-white p-6 shadow rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">내가 작성한 댓글</h2>
+        <div className="container mx-auto mt-6 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* 댓글 목록 컨테이너 */}
+                <div className="col-span-1 md:col-span-3 bg-white p-6 shadow rounded-lg">
+                    <h2 className="text-xl md:text-2xl font-bold mb-4 text-center md:text-left">
+                        내가 작성한 댓글
+                    </h2>
 
-            {loading ? (
-                <p className="text-center text-gray-500">로딩 중...</p>
-            ) : comments.length > 0 ? (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-300">
-                        <thead>
-                            <tr className="bg-gray-100">
-                                <th className="px-4 py-2 text-center hidden md:table-cell">글번호</th>
-                                <th className="px-4 py-2 w-50">댓글 내용</th>
-                                <th className="px-4 py-2 text-center hidden md:table-cell">댓글 작성자</th>
-                                <th className="px-4 py-2 text-center hidden md:table-cell">작성날짜</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {comments.map((comment) => (
-                                <tr key={comment.id} className="border-b">
-                                    <td className="px-4 py-2 text-center hidden md:table-cell">{comment.id}</td>
-                                    <td className="px-4 py-2">{comment.replyContents}</td>
-                                    <td className="px-4 py-2 text-center hidden md:table-cell">{comment.replyWriter}</td>
-                                    <td className="px-4 py-2 text-center hidden md:table-cell">
-                                        {new Date(comment.createdTime).toLocaleDateString()}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    {loading ? (
+                        <p className="text-center text-gray-500">로딩 중...</p>
+                    ) : comments.length > 0 ? (
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white border border-gray-300 text-sm md:text-base">
+                                <thead>
+                                    <tr className="bg-gray-100">
+                                        <th className="px-2 md:px-4 py-2 text-center hidden md:table-cell">글번호</th>
+                                        <th className="px-2 md:px-4 py-2 w-50">댓글 내용</th>
+                                        <th className="px-2 md:px-4 py-2 text-center hidden md:table-cell">댓글 작성자</th>
+                                        <th className="px-2 md:px-4 py-2 text-center hidden md:table-cell">작성날짜</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {comments.map((comment) => (
+                                        <tr key={comment.id} className="border-b">
+                                            <td className="px-2 md:px-4 py-2 text-center hidden md:table-cell">{comment.id}</td>
+                                            <td className="px-2 md:px-4 py-2">{comment.replyContents}</td>
+                                            <td className="px-2 md:px-4 py-2 text-center hidden md:table-cell">{comment.replyWriter}</td>
+                                            <td className="px-2 md:px-4 py-2 text-center hidden md:table-cell">
+                                                {new Date(comment.createdTime).toLocaleDateString()}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        <p className="text-center text-gray-500 mt-4">조회된 댓글이 없습니다.</p>
+                    )}
+
+                    {/* 메인 페이지 이동 버튼 */}
+                    <div className="mt-6 flex justify-center">
+                        <Link href="/" className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm md:text-base hover:bg-blue-600">
+                            메인으로 가기
+                        </Link>
+                    </div>
                 </div>
-            ) : (
-                <p className="text-center text-gray-500 mt-4">조회된 댓글이 없습니다.</p>
-            )}
-
-            <div className="mt-6">
-                <Link href="/" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                    메인으로 가기
-                </Link>
             </div>
         </div>
     </>

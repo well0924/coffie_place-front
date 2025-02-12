@@ -31,80 +31,79 @@ export default function Pagination({ pageNumber, pageSize, totalPages, basePath 
     };
 
     return (<>
-       <nav className="flex justify-center mt-4">
-            <ul className="flex space-x-1">
-                {/* First 버튼 */}
-                <li>
-                    <Link 
-                        href={isFirstPage ? '#' : createPageLink(0)} 
-                        className={`px-3 py-1 text-sm font-medium rounded-l-md ${isFirstPage 
-                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed' 
-                            : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-                        onClick={(e) => isFirstPage && e.preventDefault()}  // 클릭 방지
-                    >
-                        First
-                    </Link>
+        <nav className="flex justify-center mt-4 overflow-x-auto">
+          <ul className="flex space-x-1 sm:space-x-2">
+            {/* First 버튼 */}
+            <li>
+              <Link 
+                href={isFirstPage ? '#' : createPageLink(0)} 
+                className={`px-2 sm:px-3 md:px-4 py-1 text-xs sm:text-sm md:text-base font-medium rounded-l-md ${
+                  isFirstPage ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'
+                }`}
+                onClick={(e) => isFirstPage && e.preventDefault()} // 클릭 방지
+              >
+                First
+              </Link>
+            </li>
+      
+            {/* Previous 버튼 */}
+            <li>
+              <Link 
+                href={isFirstPage ? '#' : createPageLink(pageNumber - 1)} 
+                className={`px-2 sm:px-3 md:px-4 py-1 text-xs sm:text-sm md:text-base font-medium ${
+                  isFirstPage ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'
+                }`}
+                onClick={(e) => isFirstPage && e.preventDefault()} // 클릭 방지
+              >
+                Previous
+              </Link>
+            </li>
+      
+            {/* 페이지 번호 버튼들 */}
+            {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+              const page = startPage + i;
+              return (
+                <li key={page}>
+                  <Link 
+                    href={createPageLink(page - 1)} 
+                    className={`px-2 sm:px-3 md:px-4 py-1 text-xs sm:text-sm md:text-base font-medium ${
+                      page === pageNumber + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {page}
+                  </Link>
                 </li>
-
-                {/* Previous 버튼 */}
-                <li>
-                    <Link 
-                        href={isFirstPage ? '#' : createPageLink(pageNumber - 1)} 
-                        className={`px-3 py-1 text-sm font-medium ${isFirstPage 
-                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed' 
-                            : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-                        onClick={(e) => isFirstPage && e.preventDefault()}  // 클릭 방지
-                    >
-                        Previous
-                    </Link>
-                </li>
-
-                {/* 페이지 번호 버튼들 */}
-                {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
-                    const page = startPage + i;
-                    console.log(page);
-                    return (
-                        <li key={page}>
-                            <Link 
-                                href={createPageLink(page - 1)} 
-                                className={`px-3 py-1 text-sm font-medium ${page === pageNumber + 1 
-                                    ? 'bg-blue-500 text-white' 
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-                            >
-                                {page}
-                            </Link>
-                        </li>
-                    );
-                })}
-
-                {/* Next 버튼 */}
-                <li>
-                    <Link 
-                        href={isLastPage ? '#' : createPageLink(pageNumber + 1)} 
-                        className={`px-3 py-1 text-sm font-medium rounded-r-md ${isLastPage 
-                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed' 
-                            : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-                        onClick={(e) => isLastPage && e.preventDefault()}  // 클릭 방지
-                    >
-                        Next
-                    </Link>
-                </li>
-
-                {/* Last 버튼 */}
-                <li>
-                    <Link 
-                        href={isLastPage ? '#' : createPageLink(totalPages - 1)} 
-                        className={`px-3 py-1 text-sm font-medium rounded-r-md ${isLastPage 
-                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed' 
-                            : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-                        onClick={(e) => isLastPage && e.preventDefault()}  // 클릭 방지
-                    >
-                        Last
-                    </Link>
-                </li>
-            </ul>
+              );
+            })}
+      
+            {/* Next 버튼 */}
+            <li>
+              <Link 
+                href={isLastPage ? '#' : createPageLink(pageNumber + 1)} 
+                className={`px-2 sm:px-3 md:px-4 py-1 text-xs sm:text-sm md:text-base font-medium ${
+                  isLastPage ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'
+                }`}
+                onClick={(e) => isLastPage && e.preventDefault()} // 클릭 방지
+              >
+                Next
+              </Link>
+            </li>
+      
+            {/* Last 버튼 */}
+            <li>
+              <Link 
+                href={isLastPage ? '#' : createPageLink(totalPages - 1)} 
+                className={`px-2 sm:px-3 md:px-4 py-1 text-xs sm:text-sm md:text-base font-medium rounded-r-md ${
+                  isLastPage ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'
+                }`}
+                onClick={(e) => isLastPage && e.preventDefault()} // 클릭 방지
+              >
+                Last
+              </Link>
+            </li>
+          </ul>
         </nav>
-    </>
+      </>      
     );
 }
 

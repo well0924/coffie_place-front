@@ -30,7 +30,7 @@ export default function MemberModifyPage({
     const [detailedAddress, setDetailedAddress] = useState<string>(userAddr2);//상세주소
     const [lat, setLat] = useState<number>(0.0); // 위도
     const [lng, setLng] = useState<number>(0.0); // 경도
-    const [userRole,setRole] = useState(role);
+    const [userRole, setRole] = useState(role);
 
     //회원성별 
     const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +59,7 @@ export default function MemberModifyPage({
     //회원수정
     const updateMember = async (id: number) => {
         const data: memberRequest = {
-            userId: username, 
+            userId: username,
             memberName: name,
             userPhone: phone,
             userGender: gender,
@@ -69,7 +69,7 @@ export default function MemberModifyPage({
             userAddr2: detailedAddress,
             memberLat: lat,
             memberLng: lng,
-            role: userRole 
+            role: userRole
         };
         try {
             await memberUpdate(id, data);
@@ -93,138 +93,142 @@ export default function MemberModifyPage({
     }
 
     return <>
-        <div className="container mx-auto mt-24">
-            <div className="flex justify-center">
-                <div className="w-full max-w-md">
-                    <div className="bg-white shadow-lg rounded-lg">
-                        <div className="bg-gray-800 text-white text-center py-3 rounded-t-lg">
-                            회원수정
+        <div className="flex justify-center items-center min-h-screen p-4">
+            <div className="w-full max-w-sm sm:max-w-md md:max-w-lg bg-white shadow-lg rounded-lg p-4 sm:p-6 md:p-8">
+                <div className="bg-gray-800 text-white text-center py-3 rounded-t-lg">
+                    <h2 className="text-xl font-semibold">회원정보 수정</h2>
+                </div>
+                <div className="p-4 sm:p-6">
+                    <form>
+                        <input type="hidden" name="id" defaultValue={id} />
+
+                        {/* 아이디 */}
+                        <div className="mb-4">
+                            <label htmlFor="user_id" className="block text-sm sm:text-base font-medium text-gray-700">아이디</label>
+                            <input
+                                type="text"
+                                id="user_id"
+                                name="userId"
+                                defaultValue={userId}
+                                onChange={(e) => setUserName(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm sm:text-base"
+                            />
                         </div>
-                        <div className="p-6">
-                            <form>
-                                <input type="hidden" name="id" defaultValue={id}></input>
-                                <div className="mb-4">
-                                    <label htmlFor="user_id" className="block text-sm font-medium text-gray-700">아이디</label>
-                                    <input
-                                        type="text"
-                                        id="user_id"
-                                        name="userId"
-                                        defaultValue={userId}
-                                        onChange={(e) => setUserName(e.target.value)}
-                                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
-                                </div>
 
-                                <div className="mb-4">
-                                    <label htmlFor="user_email" className="block text-sm font-medium text-gray-700">이메일</label>
-                                    <input
-                                        type="text"
-                                        id="user_email"
-                                        name="userEmail"
-                                        defaultValue={userEmail}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <label htmlFor="user_name" className="block text-sm font-medium text-gray-700">이름</label>
-                                    <input
-                                        type="text"
-                                        id="user_name"
-                                        name="memberName"
-                                        defaultValue={memberName}
-                                        onChange={(e) => setName(e.target.value)}
-                                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <label htmlFor="user_age" className="block text-sm font-medium text-gray-700">나이</label>
-                                    <input
-                                        type="text"
-                                        id="user_age"
-                                        name="userAge"
-                                        defaultValue={userAge}
-                                        onChange={(e) => setAge(e.target.value)}
-                                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700">성별</label>
-                                    <div className="mt-2 flex items-center">
-                                        <label className="mr-4">
-                                            <input
-                                                type="checkbox"
-                                                className="mr-2"
-                                                name="userGender"
-                                                value="남성"
-                                                checked={gender === '남성'}
-                                                onChange={handleGenderChange}
-                                            />
-                                            남성
-                                        </label>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                className="mr-2"
-                                                name="userGender"
-                                                value="여성"
-                                                checked={gender === '여성'}
-                                                onChange={handleGenderChange}
-                                            />
-                                            여성
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div className="mb-4">
-                                    <label htmlFor="user_phone" className="block text-sm font-medium text-gray-700">전화번호</label>
-                                    <input
-                                        type="text"
-                                        id="user_phone"
-                                        name="userPhone"
-                                        defaultValue={userPhone}
-                                        onChange={(e) => setPhone(e.target.value)}
-                                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <AddressSearch
-                                        onComplete={handleAddressComplete}
-                                        address={address}
-                                        addressType={""}
-                                        bname={""}
-                                        buildingName={""} />
-                                </div>
-
-                                <div className="text-right mt-6">
-                                    <button
-                                        type="button"
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-md mr-2"
-                                        onClick={()=>updateMember(id)} >
-                                        정보수정
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="px-4 py-2 bg-red-600 text-white rounded-md mr-2"
-                                        onClick={() => deleteMember(id)}>
-                                        정보삭제
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="px-4 py-2 bg-gray-500 text-white rounded-md"
-                                        onClick={() => cancelButton()}                                    >
-                                        취소
-                                    </button>
-                                </div>
-                            </form>
+                        {/* 이메일 */}
+                        <div className="mb-4">
+                            <label htmlFor="user_email" className="block text-sm sm:text-base font-medium text-gray-700">이메일</label>
+                            <input
+                                type="text"
+                                id="user_email"
+                                name="userEmail"
+                                defaultValue={userEmail}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm sm:text-base"
+                            />
                         </div>
-                    </div>
+
+                        {/* 이름 */}
+                        <div className="mb-4">
+                            <label htmlFor="user_name" className="block text-sm sm:text-base font-medium text-gray-700">이름</label>
+                            <input
+                                type="text"
+                                id="user_name"
+                                name="memberName"
+                                defaultValue={memberName}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm sm:text-base"
+                            />
+                        </div>
+
+                        {/* 나이 */}
+                        <div className="mb-4">
+                            <label htmlFor="user_age" className="block text-sm sm:text-base font-medium text-gray-700">나이</label>
+                            <input
+                                type="text"
+                                id="user_age"
+                                name="userAge"
+                                defaultValue={userAge}
+                                onChange={(e) => setAge(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm sm:text-base"
+                            />
+                        </div>
+
+                        {/* 성별 */}
+                        <div className="mb-4">
+                            <label className="block text-sm sm:text-base font-medium text-gray-700">성별</label>
+                            <div className="flex flex-col sm:flex-row mt-2">
+                                <label className="inline-flex items-center mr-4">
+                                    <input
+                                        type="checkbox"
+                                        className="mr-2"
+                                        name="userGender"
+                                        value="남성"
+                                        checked={gender === "남성"}
+                                        onChange={handleGenderChange}
+                                    />
+                                    남성
+                                </label>
+                                <label className="inline-flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        className="mr-2"
+                                        name="userGender"
+                                        value="여성"
+                                        checked={gender === "여성"}
+                                        onChange={handleGenderChange}
+                                    />
+                                    여성
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* 전화번호 */}
+                        <div className="mb-4">
+                            <label htmlFor="user_phone" className="block text-sm sm:text-base font-medium text-gray-700">전화번호</label>
+                            <input
+                                type="text"
+                                id="user_phone"
+                                name="userPhone"
+                                defaultValue={userPhone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm sm:text-base"
+                            />
+                        </div>
+
+                        {/* 주소 검색 */}
+                        <div className="mb-4">
+                            <AddressSearch onComplete={handleAddressComplete} address={address} addressType={""} bname={""} buildingName={""} />
+                        </div>
+
+                        {/* 버튼 그룹 */}
+                        <div className="mt-6 flex flex-col sm:flex-row justify-center sm:justify-end space-y-2 sm:space-y-0 sm:space-x-4">
+                            <button
+                                type="button"
+                                className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                onClick={() => updateMember(id)}
+                            >
+                                정보수정
+                            </button>
+                            <button
+                                type="button"
+                                className="w-full sm:w-auto px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                                onClick={() => deleteMember(id)}
+                            >
+                                정보삭제
+                            </button>
+                            <button
+                                type="button"
+                                className="w-full sm:w-auto px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                                onClick={() => cancelButton()}
+                            >
+                                취소
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </>;
+    </>
+
 }

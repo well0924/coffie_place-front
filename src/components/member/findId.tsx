@@ -56,47 +56,49 @@ export default function FindIdPage() {
     };
 
     return <>
-        {/* ID 찾기*/}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-            <div className="text-lg font-semibold mb-4">회원 아이디 찾기</div>
-            <h3 className="text-xl font-medium mb-4">아이디 찾기</h3>
-            <form>
-                <div className="mb-4">
-                    <label htmlFor="user_name" className="block text-sm font-medium mb-1">이름</label>
-                    <input
-                        type="text"
-                        id="user_name"
-                        name="memberName"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={memberName}
-                        onChange={(e) => setMemberName(e.target.value)}
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="user_email" className="block text-sm font-medium mb-1">이메일</label>
-                    <input
-                        type="text"
-                        id="user_email"
-                        name="userEmail"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={userEmail}
-                        onChange={(e) => setUserEmail(e.target.value)}
-                    />
-                </div>
-                <div className="text-right mb-4">
-                    <button
-                        type="button"
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                        onClick={handleFindId}>
-                        아이디 찾기
-                    </button>
-                </div>
-                <div>
-                    <div className={`text-lg ${message.includes('찾으시는 아이디는') ? 'text-blue-500' : 'text-red-500'}`}>
-                        {message}
+        <div className="flex justify-center items-center min-h-screen p-4">
+            <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl bg-white shadow-lg rounded-lg p-4 sm:p-6 md:p-8">
+                <div className="text-lg font-semibold mb-4 text-center sm:text-left">회원 아이디 찾기</div>
+                <h3 className="text-lg sm:text-xl font-medium mb-4 text-center">아이디 찾기</h3>
+                <form>
+                    <div className="mb-4">
+                        <label htmlFor="user_name" className="block text-sm sm:text-base font-medium mb-1">이름</label>
+                        <input
+                            type="text"
+                            id="user_name"
+                            name="memberName"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm sm:text-base"
+                            value={memberName}
+                            onChange={(e) => setMemberName(e.target.value)}
+                        />
                     </div>
-                </div>
-            </form>
+                    <div className="mb-4">
+                        <label htmlFor="user_email" className="block text-sm sm:text-base font-medium mb-1">이메일</label>
+                        <input
+                            type="text"
+                            id="user_email"
+                            name="userEmail"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm sm:text-base"
+                            value={userEmail}
+                            onChange={(e) => setUserEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="text-center sm:text-right mb-4">
+                        <button
+                            type="button"
+                            className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                            onClick={handleFindId}>
+                            아이디 찾기
+                        </button>
+                    </div>
+                    <div>
+                        <div className={`text-sm sm:text-base text-center ${message.includes('찾으시는 아이디는') ? 'text-blue-500' : 'text-red-500'}`}>
+                            {message}
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </>
+
 }

@@ -9,7 +9,7 @@ interface DownloadButtonProps {
 }
 
 
-export default function Download({ fileName, fileType } : DownloadButtonProps) {
+export default function Download({ fileName, fileType }: DownloadButtonProps) {
     const handleDownload = async () => {
         try {
             const response = await api.get(`/api/file/${fileType}/download/${fileName}`, {
@@ -32,9 +32,12 @@ export default function Download({ fileName, fileType } : DownloadButtonProps) {
         }
     };
 
-    return <>
-         <button onClick={handleDownload} className="text-blue-500 hover:underline">
+    return (<>
+        <button
+            onClick={handleDownload}
+            className="text-blue-500 hover:underline hover:bg-gray-200 px-2 py-1 sm:px-3 sm:py-2 rounded text-sm sm:text-base md:text-lg transition"
+        >
             {fileName}
         </button>
-    </>
+    </>)
 }

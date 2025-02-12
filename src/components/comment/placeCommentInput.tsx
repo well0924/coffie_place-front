@@ -30,7 +30,7 @@ export function PlaceCommentInput({ placeId, onCommentSubmitted }: CommentInputP
                 replyWriter: user?.userId,
             };
             console.log(newCommentData);
-            const response =  await createPlaceComment(placeId, newCommentData);
+            const response = await createPlaceComment(placeId, newCommentData);
             console.log(response);
             setNewComment("");
             setSelectedRating(null);
@@ -42,13 +42,14 @@ export function PlaceCommentInput({ placeId, onCommentSubmitted }: CommentInputP
         }
     };
     return <>
-        <div className="mb-4 p-4 bg-white rounded-lg shadow-md">
+        <div className="mb-4 p-4 bg-white rounded-lg shadow-md max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl mx-auto">
+            {/* 별점 선택 */}
             <div className="flex space-x-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                     <span
                         key={star}
                         onClick={() => setSelectedRating(star)}
-                        className={`cursor-pointer text-2xl ${selectedRating && selectedRating >= star ? "text-yellow-500" : "text-gray-300"
+                        className={`cursor-pointer text-xl sm:text-2xl md:text-3xl ${selectedRating && selectedRating >= star ? "text-yellow-500" : "text-gray-300"
                             }`}
                     >
                         ★
@@ -56,20 +57,23 @@ export function PlaceCommentInput({ placeId, onCommentSubmitted }: CommentInputP
                 ))}
             </div>
 
+            {/* 댓글 입력창 */}
             <textarea
-                className="w-full border rounded p-2 mt-2"
+                className="w-full border rounded p-2 sm:p-3 md:p-4 mt-2"
                 placeholder="댓글을 입력하세요..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
             />
 
+            {/* 작성 버튼 */}
             <button
                 onClick={handleSubmitComment}
-                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+                className="mt-2 bg-blue-500 text-white px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded hover:bg-blue-600 transition-all disabled:opacity-50"
                 disabled={loading}
             >
                 {loading ? "작성 중..." : "댓글 작성"}
             </button>
         </div>
     </>
+
 }

@@ -89,35 +89,41 @@ export default function WishList() {
     };
 
     return <>
-        <div className="md:col-span-3 bg-white p-6 shadow rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">내가 찜한 카페 리스트</h2>
+        <div className="md:col-span-3 bg-white p-4 md:p-6 shadow rounded-lg">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-center md:text-left">
+                내가 찜한 카페 리스트
+            </h2>
 
             {!user ? (
                 <p className="text-gray-500 text-center mt-4">로그인이 필요합니다.</p>
             ) : wishlist.length > 0 ? (
                 <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                         {wishlist.map((item) => (
-                            <div key={item.id} className="bg-gray-100 p-4 shadow rounded-lg">
+                            <div key={item.id} className="bg-gray-100 p-3 md:p-4 shadow rounded-lg w-full sm:w-72 md:w-auto mx-auto">
                                 <Image
                                     src={getImageSrc(item.thumbFileImagePath) || "/default-image.jpg"}
                                     alt={item.placeName}
                                     width={200}
                                     height={150}
-                                    className="rounded-md w-full"
+                                    className="rounded-md w-full h-40 object-cover"
                                 />
-                                <h3 className="text-lg font-semibold mt-2">{item.placeName}</h3>
-                                <p className="text-sm text-gray-500">{item.placeAddr}</p>
-                                <p className="text-yellow-500">⭐ {item.reviewRate}</p>
-                                <div className="flex justify-between mt-4">
+                                <h3 className="text-sm md:text-lg font-semibold mt-2 text-center md:text-left">
+                                    {item.placeName}
+                                </h3>
+                                <p className="text-xs md:text-sm text-gray-500 text-center md:text-left">{item.placeAddr}</p>
+                                <p className="text-yellow-500 text-sm md:text-base text-center md:text-left">
+                                    ⭐ {item.reviewRate}
+                                </p>
+                                <div className="flex flex-col md:flex-row justify-center md:justify-between mt-4 gap-2">
                                     <Link
                                         href={`/place/${item.placeId}`}
-                                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                        className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm md:text-base text-center hover:bg-blue-600"
                                     >
                                         상세보기
                                     </Link>
                                     <button
-                                        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                                        className="bg-red-500 text-white px-4 py-2 rounded-md text-sm md:text-base hover:bg-red-600"
                                         onClick={() => handleDeleteWish(item.placeId)}
                                     >
                                         삭제
@@ -131,7 +137,7 @@ export default function WishList() {
                     {hasMore && (
                         <div className="flex justify-center mt-6">
                             <button
-                                className="bg-gray-300 text-black px-6 py-2 rounded-md hover:bg-gray-400"
+                                className="bg-gray-300 text-black px-6 py-2 rounded-md text-sm md:text-base hover:bg-gray-400"
                                 onClick={loadMoreWishes}
                                 disabled={loading}
                             >

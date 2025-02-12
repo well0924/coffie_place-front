@@ -20,8 +20,12 @@ export default function selectDeleteButton({ checkedItems, onDelete }: DeleteBut
     };
 
     return <>
-        <button onClick={handleClick} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+        <button
+            onClick={handleClick}
+            className="bg-blue-500 text-white py-2 px-3 sm:px-4 md:px-6 rounded text-xs sm:text-sm md:text-base w-full md:w-auto hover:bg-blue-600 transition"
+        >
             선택삭제
         </button>
     </>
+
 }

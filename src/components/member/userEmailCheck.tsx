@@ -4,10 +4,10 @@ import { userEmailDuplicate } from "@/utile/api/member/memberApi";
 import { useState } from "react";
 
 interface MemberEmailCheckProps {
-    onIdCheck: (isDuplicate: boolean | null,userEmail: string) => void;
+    onIdCheck: (isDuplicate: boolean | null, userEmail: string) => void;
 }
 
-export default function MemberEmailCheck({onIdCheck} : MemberEmailCheckProps) {
+export default function MemberEmailCheck({ onIdCheck }: MemberEmailCheckProps) {
     //useState를 사용하려면 함수명은 대문자로 시작을 한다.
     const [userEmail, setUserEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -15,14 +15,14 @@ export default function MemberEmailCheck({onIdCheck} : MemberEmailCheckProps) {
     const [validationMessage, setValidationMessage] = useState('');
 
     const checkEmail = async () => {
-        if(userEmail.trim() === ''){
+        if (userEmail.trim() === '') {
             setValidationMessage('이메일을 입력하지 않았습니다.');
             setMessage('');
             return;
         }
 
         try {
-            const response  = await userEmailDuplicate(userEmail);
+            const response = await userEmailDuplicate(userEmail);
             console.log(response);
             let duplicateResult = (await response).data;
 
@@ -35,7 +35,7 @@ export default function MemberEmailCheck({onIdCheck} : MemberEmailCheckProps) {
                 setIsDuplicate(false);
             }
             setValidationMessage(''); // 유효성 메시지 지우기
-            onIdCheck(isDuplicate,userEmail); 
+            onIdCheck(isDuplicate, userEmail);
         } catch (error) {
             setMessage('이메일 중복 확인 중 오류가 발생했습니다.');
         }

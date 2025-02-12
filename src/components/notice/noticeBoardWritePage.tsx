@@ -19,19 +19,19 @@ interface Errors {
 }
 
 interface ForwardedQuillComponent extends ReactQuillProps {
-	forwardedRef: React.Ref<ReactQuill>;
+    forwardedRef: React.Ref<ReactQuill>;
 }
 
 const QuillNoSSRWrapper = dynamic(
-	async () => {
-		const { default: QuillComponent } = await import('react-quill');
-		const Quill = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
-			<QuillComponent ref={forwardedRef} {...props} />
-		);
-		return Quill;
-	},
-	{ loading: () => <div>...loading</div>, ssr: false },
-); 
+    async () => {
+        const { default: QuillComponent } = await import('react-quill');
+        const Quill = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
+            <QuillComponent ref={forwardedRef} {...props} />
+        );
+        return Quill;
+    },
+    { loading: () => <div>...loading</div>, ssr: false },
+);
 
 export default function NoticeBoardWritePage() {
     const [noticeTitle, setNoticeTitle] = useState('');//공지게시글 제목
@@ -77,21 +77,23 @@ export default function NoticeBoardWritePage() {
     }
 
     return <>
-        <div className="container mx-auto mt-24">
-            <h1 className="text-2xl font-bold">게시글 작성</h1>
+        <div className="container mx-auto mt-12 p-6">
+            <h1 className="text-2xl font-bold text-center md:text-left">게시글 작성</h1>
+
             <div className="shadow-lg rounded-lg p-6 bg-white">
                 <form id="boardform" encType="multipart/form-data" onSubmit={(e) => e.preventDefault()}>
                     {/* 숨겨진 필드 */}
                     <input type="hidden" id="noticeAuthor" name="noticeWriter" value="well4149" />
                     <input type="hidden" id="fileGroupId" name="fileGroupId" value="fileGroupId123" />
 
-                    <div className="grid grid-cols-2 gap-4">
+                    {/* 카테고리 & 고정글 여부 */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label htmlFor="noticeGroup" className="block text-sm font-medium">게시글 카테고리</label>
+                            <label htmlFor="noticeGroup" className="block text-sm md:text-base font-medium">게시글 카테고리</label>
                             <select
                                 name="noticeGroup"
                                 id="noticeGroup"
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm md:text-base"
                                 value={noticeGroup}
                                 onChange={(e) => setNoticeGroup(e.target.value)}
                             >
@@ -103,11 +105,11 @@ export default function NoticeBoardWritePage() {
                         </div>
 
                         <div>
-                            <label htmlFor="isFixed" className="block text-sm font-medium">고정글 여부</label>
+                            <label htmlFor="isFixed" className="block text-sm md:text-base font-medium">고정글 여부</label>
                             <select
                                 name="isFixed"
                                 id="isFixed"
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm md:text-base"
                                 value={isFixed}
                                 onChange={(e) => setIsFixed(e.target.value)}
                             >
@@ -119,57 +121,63 @@ export default function NoticeBoardWritePage() {
                         </div>
                     </div>
 
+                    {/* 제목 */}
                     <div className="mt-4">
-                        <label htmlFor="noticeTitle" className="block text-sm font-medium">제목</label>
+                        <label htmlFor="noticeTitle" className="block text-sm md:text-base font-medium">제목</label>
                         <input
                             type="text"
                             id="noticeTitle"
                             name="noticeTitle"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm md:text-base h-10 md:h-12"
                             value={noticeTitle}
                             onChange={(e) => setNoticeTitle(e.target.value)}
                         />
                         {errors.noticeTitle && <p className="text-red-500">{errors.noticeTitle}</p>}
                     </div>
-                    {/* 글 내용 부분에 에디터를 적용 */}
+
+                    {/* 내용 */}
                     <div className="mt-4">
-                        <label htmlFor="noticeContent" className="block text-sm font-medium">내용</label>
-                        <QuillNoSSRWrapper 
+                        <label htmlFor="noticeContent" className="block text-sm md:text-base font-medium">내용</label>
+                        <QuillNoSSRWrapper
                             forwardedRef={quillRef}
                             value={noticeContents}
                             onChange={setNoticeContents}
-                            style={{ width: '95%', height: '170px' }}
-						    theme="snow"    
+                            style={{ width: "100%", height: "200px" }} // 반응형으로 자동 조정
+                            theme="snow"
                         />
                         {errors.noticeContents && <p className="text-red-500">{errors.noticeContents}</p>}
                     </div>
-                    <br></br>        
+
+                    {/* 파일 업로드 */}
                     <div className="mt-4">
-                        <label htmlFor="addfile" className="block text-sm font-medium">첨부 파일</label>
+                        <label htmlFor="addfile" className="block text-sm md:text-base font-medium">첨부 파일</label>
                         <input
                             type="file"
                             id="addfile"
                             name="file"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full border border-gray-300 border-dashed p-2 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm md:text-base"
                             onChange={handleFileChange}
                             multiple
                         />
                         {errors.file && <p className="text-red-500">{errors.file}</p>}
                     </div>
 
-                    <div className="mt-6 text-right">
-                        <Link href={'/notice'} className="inline-flex justify-center rounded-md border border-transparent bg-gray-500 py-2 px-4 text-sm font-medium text-white hover:bg-gray-600">목록</Link>
+                    {/* 버튼 */}
+                    <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-2">
+                        <Link href="/notice" className="w-full md:w-auto inline-flex justify-center rounded-md border border-transparent bg-gray-500 py-2 px-4 text-sm md:text-base font-medium text-white hover:bg-gray-600">
+                            목록
+                        </Link>
                         <button
                             type="button"
-                            className="ml-2 inline-flex justify-center rounded-md border border-transparent bg-blue-500 py-2 px-4 text-sm font-medium text-white hover:bg-blue-600"
-                            onClick={handleSubmit} // handleSubmit 함수 사용
+                            className="w-full md:w-auto inline-flex justify-center rounded-md border border-transparent bg-blue-500 py-2 px-4 text-sm md:text-base font-medium text-white hover:bg-blue-600"
+                            onClick={handleSubmit}
                         >
                             작성하기
                         </button>
                     </div>
 
                     {/* 일반 오류 메시지 */}
-                    {errors.general && <p className="text-red-500">{errors.general}</p>}
+                    {errors.general && <p className="text-red-500 mt-4">{errors.general}</p>}
                 </form>
             </div>
         </div>

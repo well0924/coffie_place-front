@@ -42,24 +42,32 @@ export default function RecentPlaceSearchLists({ recentSearches, onSearchSelect,
     };
 
     return <>
-       <div className="relative w-full">
+        <div className="relative w-full">
             {recentSearches.length > 0 ? (
-                <div className="absolute left-0 w-full bg-white border border-gray-300 mt-1 shadow-lg rounded-md z-50">
-                    <h3 className="text-gray-600 px-3 py-2 border-b">최근 검색어</h3>
-                    <div className="flex flex-wrap gap-2 p-3">
+                <div className="absolute left-0 w-full md:w-96 lg:w-[30rem] bg-white border border-gray-300 mt-1 shadow-lg rounded-md z-50 max-h-60 overflow-y-auto">
+                    {/* 최근 검색어 제목 */}
+                    <h3 className="text-gray-600 px-3 py-2 border-b text-sm md:text-base">최근 검색어</h3>
+
+                    {/* 검색어 목록 */}
+                    <div className="flex flex-col md:flex-wrap gap-2 p-3">
                         {recentSearches.map((search, index) => (
-                            <div key={index} className="flex items-center justify-between w-full px-3 py-1 hover:bg-gray-100 cursor-pointer">
-                                <button onClick={() => onSearchSelect(search)} className="text-gray-700">{search}</button>
-                                <button onClick={() => handleDeleteSearch(search)} className="text-red-500 hover:text-red-700 ml-2">X</button>
+                            <div
+                                key={index}
+                                className="flex justify-between items-center px-3 py-1 hover:bg-gray-100 cursor-pointer rounded-md"
+                            >
+                                <button onClick={() => onSearchSelect(search)} className="text-gray-700 text-sm md:text-base">{search}</button>
+                                <button onClick={() => handleDeleteSearch(search)} className="text-red-500 hover:text-red-700 ml-2 text-sm md:text-base">X</button>
                             </div>
                         ))}
                     </div>
+
+                    {/* 전체 삭제 버튼 */}
                     <button onClick={handleDeleteAllSearch} className="w-full text-sm text-red-500 hover:underline py-2">
                         전체 삭제
                     </button>
                 </div>
             ) : (
-                <p className="absolute left-0 w-full bg-white border border-gray-300 mt-1 p-2 text-gray-500 text-center rounded-md shadow-lg z-50">
+                <p className="absolute left-0 w-full md:w-96 lg:w-[30rem] bg-white border border-gray-300 mt-1 p-2 text-gray-500 text-center rounded-md shadow-lg z-50 text-sm md:text-base">
                     최근 검색어가 없습니다.
                 </p>
             )}

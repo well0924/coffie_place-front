@@ -8,7 +8,7 @@ export interface AddressSearchProps {
     addressType: string;
     bname: string;
     buildingName: string;
-    onComplete?: (address: string, coordinates: { lat: number; lng: number }, buildingName: string,  detailedAddress: string) => void;
+    onComplete?: (address: string, coordinates: { lat: number; lng: number }, buildingName: string, detailedAddress: string) => void;
 }
 
 export default function AddressSearch({ onComplete }: AddressSearchProps) {
@@ -19,7 +19,7 @@ export default function AddressSearch({ onComplete }: AddressSearchProps) {
     const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null); // 위경도 값 상태
 
     const handleComplete = (data: AddressSearchProps) => {
-        console.log('검색완료::'+data);
+        console.log('검색완료::' + data);
         let fullAddress: string = data.address;
         let extraAddress: string = "";
 
@@ -62,99 +62,73 @@ export default function AddressSearch({ onComplete }: AddressSearchProps) {
             console.log(buildingName);
             console.log(coordinates);
             console.log(detailedAddress);
-            onComplete(selectedAddress,coordinates,buildingName,detailedAddress!);//부모 컴포넌트에 값을 전달
+            onComplete(selectedAddress, coordinates, buildingName, detailedAddress!);//부모 컴포넌트에 값을 전달
         }
-    }, [selectedAddress, buildingName, coordinates,detailedAddress,onComplete]);
+    }, [selectedAddress, buildingName, coordinates, detailedAddress, onComplete]);
 
     return (
-        <div>
-            <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">주소</label>
-                <div className="flex items-center">
-                    <input
-                        id="signUpUserPostNo"
-                        className="form-input mt-1 block w-2/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                        placeholder="도로명 주소"
-                        type="text"
-                        readOnly
-                        value={selectedAddress}
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPostcode(true)}
-                        className="ml-3 px-3 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-600"
-                    >
-                        주소 찾기
-                    </button>
-                </div>
-            </div>
-
-            <div className="mb-4">
-                <input
-                    className="form-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                    placeholder="상세 주소"
-                    name="userAddr2"
-                    id="signUpUserAddress"
-                    type="text"
-                    value={detailedAddress}
-                    onChange={handleDetailedAddressChange}
-                />
-            </div>
-
-            {/* 지도는 상세주소 아래에 위치 */}
-            {selectedAddress && (
+        <>
+            <div className="w-full max-w-lg mx-auto">
                 <div className="mb-4">
-                    <KakaoMap address={selectedAddress} houseName={buildingName} onLocationChange={handleMapLocation} width="240px" height="240px"/>
-                </div>
-            )}
-
-            {showPostcode && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 1000,
-                    }}
-                >
-                    <div
-                        style={{
-                            backgroundColor: "#fff",
-                            padding: "30px",
-                            borderRadius: "8px",
-                            width: "600px", // 모달 너비를 조금 더 넓게 조정
-                            maxWidth: "90%",
-                            position: "relative",
-                            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
-                        }}
-                    >
+                    <label className="block text-sm font-medium text-gray-700">주소</label>
+                    <div className="flex flex-col sm:flex-row items-center gap-2">
+                        <input
+                            id="signUpUserPostNo"
+                            className="form-input w-full sm:w-2/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm"
+                            placeholder="도로명 주소"
+                            type="text"
+                            readOnly
+                            value={selectedAddress}
+                        />
                         <button
-                            onClick={() => setShowPostcode(false)}
-                            style={{
-                                position: "absolute",
-                                top: "10px", // 이 위치를 조정해 닫기 버튼을 더 위로 이동
-                                right: "5px",
-                                cursor: "pointer",
-                                backgroundColor: "transparent",
-                                color: "#ff5e5e",
-                                border: "none",
-                                fontSize: "16px",
-                                fontWeight: "bold",
-                                boxShadow: "none",
-                            }}
+                            type="button"
+                            onClick={() => setShowPostcode(true)}
+                            className="w-full sm:w-auto px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm sm:text-base"
                         >
-                            닫기
+                            주소 찾기
                         </button>
-                        <DaumPostcode onComplete={handleComplete} />
                     </div>
                 </div>
-            )}
-        </div>
-    );
+
+                <div className="mb-4">
+                    <input
+                        className="form-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm"
+                        placeholder="상세 주소"
+                        name="userAddr2"
+                        id="signUpUserAddress"
+                        type="text"
+                        value={detailedAddress}
+                        onChange={handleDetailedAddressChange}
+                    />
+                </div>
+
+                {/* 지도 */}
+                {selectedAddress && (
+                    <div className="mb-4 flex justify-center">
+                        <KakaoMap
+                            address={selectedAddress}
+                            houseName={buildingName}
+                            onLocationChange={handleMapLocation}
+                            width="100%"
+                            height="240px"
+                        />
+                    </div>
+                )}
+
+                {/* 주소 검색 모달 */}
+                {showPostcode && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                        <div className="bg-white p-6 rounded-lg w-11/12 md:w-[600px] max-w-lg shadow-lg relative">
+                            <button
+                                onClick={() => setShowPostcode(false)}
+                                className="absolute top-2 right-3 text-red-500 text-lg font-bold hover:text-red-700"
+                            >
+                                ✕
+                            </button>
+                            <DaumPostcode onComplete={handleComplete} />
+                        </div>
+                    </div>
+                )}
+            </div>
+        </>);
 }

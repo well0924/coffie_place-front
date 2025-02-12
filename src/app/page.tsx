@@ -5,7 +5,6 @@ import { getNoticeList } from "../utile/api/notice/noticeApi"
 import { palceReviewTop5List } from "../utile/api/place/placeApi"
 import { SearchParams } from "@/interface/common";
 import ReviewTop5PlacePage from "@/components/place/top5place";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 export const metadata: Metadata = {
   title: "메인 페이지",
@@ -130,69 +129,5 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
     </>
   } catch (error) {
     console.log(error);
-    return (
-      <main className="flex min-h-screen flex-col p-6">
-        <div className="row">
-          {/* 가게 top5부분 */}
-          <h4 className="text-xl font-semibold" id="title-top5">카페 TOP5</h4>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div className="col-span-4 text-center text-gray-600">
-              현재 평점이 높은 가게가 없습니다.
-            </div>
-          </div>
-        </div>
-        {/* 자유 게시판과 공지 게시판을 한 행으로 나누기 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-          {/* 자유 게시판 부분 */}
-          <div className="shadow-lg p-4">
-            <h4 className="text-xl font-semibold mb-4">자유게시판</h4>
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">글번호</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">제목</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">작성자</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">작성날짜</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">조회수</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td colSpan={5} className="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">
-                    조회된 게시글이 없습니다.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <Link href="/board" className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md">
-              <>더보기</>
-            </Link>
-          </div>
-
-          {/* 공지 게시판 부분 */}
-          <div className="shadow-lg p-4">
-            <h4 className="text-xl font-semibold mb-4">공지 게시판</h4>
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">카테고리</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">제목</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">작성자</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">작성날짜</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td colSpan={4} className="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">조회된 게시글이 없습니다.</td>
-                </tr>
-              </tbody>
-            </table>
-            <Link href="/notice" className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-md">
-              <>더보기</>
-            </Link>
-          </div>
-        </div>
-      </main>
-    );
   }
 }

@@ -64,12 +64,12 @@ export function PlaceCommentList({ placeId }: PlaceCommentsProps) {
         try {
             if (likedStatus[commentId]) {
                 await replyLikeDown(commentId);
-                setLikes((prev) => ({...prev,[commentId]: Math.max((prev[commentId] ?? 1) - 1, 0),}));
-                setLikedStatus((prev) => ({...prev,[commentId]: false,}));
+                setLikes((prev) => ({ ...prev, [commentId]: Math.max((prev[commentId] ?? 1) - 1, 0), }));
+                setLikedStatus((prev) => ({ ...prev, [commentId]: false, }));
             } else {
                 await replyLikeUp(commentId);
-                setLikes((prev) => ({...prev,[commentId]: (prev[commentId] ?? 0) + 1,}));
-                setLikedStatus((prev) => ({...prev,[commentId]: true,}));
+                setLikes((prev) => ({ ...prev, [commentId]: (prev[commentId] ?? 0) + 1, }));
+                setLikedStatus((prev) => ({ ...prev, [commentId]: true, }));
             }
         } catch (error) {
             console.error("Failed to toggle like:", error);
@@ -77,8 +77,8 @@ export function PlaceCommentList({ placeId }: PlaceCommentsProps) {
     };
 
     return <>
-       <div className="mt-8 bg-gray-100 p-6 rounded-lg">
-            <h2 className="text-xl font-bold mb-4">댓글</h2>
+        <div className="mt-8 bg-gray-100 p-4 sm:p-6 md:p-8 rounded-lg max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl mx-auto">
+            <h2 className="text-lg sm:text-xl font-bold mb-4">댓글</h2>
 
             {/* 댓글 입력창 */}
             <PlaceCommentInput placeId={placeId} onCommentSubmitted={fetchComments} />
@@ -87,38 +87,39 @@ export function PlaceCommentList({ placeId }: PlaceCommentsProps) {
             <div className="space-y-4">
                 {comments.length > 0 ? (
                     comments.map((comment) => (
-                        <div key={comment.id} className="p-4 bg-white rounded-lg shadow flex justify-between">
-                            <div>
+                        <div key={comment.id} className="p-4 bg-white rounded-lg shadow flex flex-col sm:flex-row justify-between">
+                            <div className="flex-1">
                                 <div className="flex items-center space-x-2">
-                                    <p className="font-semibold">{comment.replyWriter}</p>
-                                    <div className="flex text-yellow-500">
+                                    <p className="font-semibold text-sm sm:text-base">{comment.replyWriter}</p>
+                                    <div className="flex text-yellow-500 text-xs sm:text-sm">
                                         {"★".repeat(comment.reviewPoint)}
                                         {"☆".repeat(5 - comment.reviewPoint)}
                                     </div>
                                 </div>
-                                <p className="text-gray-700">{comment.replyContents}</p>
+                                <p className="text-gray-700 text-sm sm:text-base">{comment.replyContents}</p>
                             </div>
-                            <div className="flex items-center space-x-3">
+                            <div className="flex flex-row sm:flex-col items-center space-x-3 sm:space-x-0 sm:space-y-2">
                                 {/* 좋아요 버튼 */}
                                 <button onClick={() => handleLikeToggle(comment.id)} className="flex items-center space-x-2">
                                     <FontAwesomeIcon
                                         icon={faHeart}
-                                        className={`w-5 h-5 transition ${likedStatus[comment.id] ? "text-red-500" : "text-gray-500"}`}
+                                        className={`w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6 transition ${likedStatus[comment.id] ? "text-red-500" : "text-gray-500"}`}
                                     />
-                                    <span>{likes[comment.id] ?? 0}</span>
+                                    <span className="text-sm sm:text-base">{likes[comment.id] ?? 0}</span>
                                 </button>
 
                                 {/* 삭제 버튼 */}
                                 <button onClick={() => handleDeleteComment(comment.id)} className="text-gray-500 hover:text-red-500">
-                                    <FontAwesomeIcon icon={faTrash} className="w-5 h-5" />
+                                    <FontAwesomeIcon icon={faTrash} className="w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6" />
                                 </button>
                             </div>
                         </div>
                     ))
                 ) : (
-                    <p className="text-gray-500">아직 댓글이 없습니다.</p>
+                    <p className="text-gray-500 text-center">아직 댓글이 없습니다.</p>
                 )}
             </div>
         </div>
     </>
+
 }

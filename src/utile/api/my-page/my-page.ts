@@ -67,11 +67,6 @@ export const getUserPosts = async (userId:string) :Promise<BoardResponse[]> => {
 export const getUserComments = async (userId:string) :Promise<commentResponse[]> => {
     try {
         const response = await api.get<CommonResponse<commentResponse[]>>(`/my-page/comment/${userId}`);
-
-        console.log("📌 API 응답:", response.data); // API 응답 확인
-        console.log("📌 댓글 데이터:", response.data?.data); // 댓글 목록 확인
-
-        // API 응답이 정상적인 경우, 데이터 반환
         return response.data?.data ?? [];
     } catch(error) {
         console.log(error);

@@ -19,7 +19,7 @@ export default function KakaoMap({
 }: KakaoMapProps) {
   const mapRef = useRef<kakao.maps.Map | null>(null);
   const markerRef = useRef<kakao.maps.Marker | null>(null);
-  const mapContainerRef = useRef<HTMLDivElement | null>(null); // 🔹 div 요소 참조
+  const mapContainerRef = useRef<HTMLDivElement | null>(null); // div 요소 참조
 
   useEffect(() => {
     const loadKakaoMapScript = () => {
@@ -70,7 +70,7 @@ export default function KakaoMap({
     }
   }, [address, houseName]);
 
-  // 🔹 지도를 주소에 맞게 업데이트
+  //  지도를 주소에 맞게 업데이트
   const updateMapWithAddress = (address: string, houseName: string) => {
     if (!mapRef.current) {
       console.error("Map is not initialized yet.");
@@ -78,7 +78,8 @@ export default function KakaoMap({
     }
 
     const geocoder = new kakao.maps.services.Geocoder();
-    geocoder.addressSearch(address, (result, status) => {
+
+    geocoder.addressSearch(houseName, (result, status) => {
       if (status === kakao.maps.services.Status.OK && result[0]) {
         const latitude = parseFloat(result[0].y);
         const longitude = parseFloat(result[0].x);
