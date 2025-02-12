@@ -92,7 +92,7 @@ export default function AdminListPage({ searchParams }: { searchParams: SearchPa
                     가게등록
                 </button>
                 {/**가게 목록 엑셀파일 다운로드**/}
-                
+                <Link href={'http://localhost:8081/api/file/place-download'}  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"> 가게 목록 다운로드</Link>
                 {/*컴포넌트로 대체*/}
                 <SelectDeleteButton checkedItems={checkedItems} onDelete={handleDelete}/>
                 <Link href={"/notice"} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">공지글 작성</Link>

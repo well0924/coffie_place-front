@@ -49,7 +49,7 @@ export default async function PlaceListPage({ searchParams }: { searchParams: Se
 
                         <div className="flex space-x-4 mb-4">
                             <Link
-                                href={"#"}
+                                href={'http://localhost:8081/api/file/place-download'}
                                 className="btn btn-primary bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
                             >
                                 가게목록출력
