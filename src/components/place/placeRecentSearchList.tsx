@@ -6,19 +6,25 @@ import { useEffect, useState } from "react";
 interface RecentSearchListProps {
     recentSearches: string[];
     onSearchSelect: (query: string) => void;
-    fetchRecentSearches: () => void;
+    setRecentSearches: (newList: string[]) => void; // 직접 상태 업데이트
+    setShowRecentSearches: (value: boolean) => void; // 검색창이 닫히는 문제 방지
 }
 
-export default function RecentPlaceSearchLists({ recentSearches, onSearchSelect, fetchRecentSearches }: RecentSearchListProps) {
+export default function RecentPlaceSearchLists({ recentSearches, onSearchSelect, setRecentSearches, setShowRecentSearches }: RecentSearchListProps) {
 
     const [loading, setLoading] = useState(false);
 
     // 개별 검색어 삭제
-    const handleDeleteSearch = async (query: string) => {
+    const handleDeleteSearch = async (name: string) => {
         setLoading(true);
+        console.log(name);
         try {
-            await recentSearchDelete(query);
-            fetchRecentSearches(); // 목록 갱신
+            await recentSearchDelete(name);
+            const updatedList = recentSearches.filter(item => item !== name);
+            setRecentSearches(updatedList); // UI 즉시 업데이트
+            if (updatedList.length === 0) {
+                setShowRecentSearches(false); // 목록이 비었을 때 닫기
+            }
         } catch (error) {
             console.error("검색어 삭제 실패:", error);
         } finally {
@@ -32,7 +38,8 @@ export default function RecentPlaceSearchLists({ recentSearches, onSearchSelect,
             setLoading(true);
             try {
                 await recentSearchLogDeleteAll();
-                fetchRecentSearches(); // 목록 갱신
+                setRecentSearches([]); // 전체 삭제 후 UI 업데이트
+                setShowRecentSearches(false); // 목록이 비었으므로 닫기
             } catch (error) {
                 console.error("검색어 전체 삭제 실패:", error);
             } finally {

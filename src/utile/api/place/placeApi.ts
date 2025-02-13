@@ -101,9 +101,10 @@ export const recentSearchLogDeleteAll = async (): Promise<void> => {
 }
 
 //최근 검색어 삭제
-export const recentSearchDelete = async (placeName: string): Promise<void> => {
+export const recentSearchDelete = async (name: string): Promise<void> => {
     try {
-        const deleteResult = await api.delete(`/palce/search-log/${placeName}`);
+        console.log(name);
+        const deleteResult = await api.delete(`/place/search-log/${name}`);
         return deleteResult.data;
     } catch (error) {
         throw handleError(error);
