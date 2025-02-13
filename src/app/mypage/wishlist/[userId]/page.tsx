@@ -1,8 +1,11 @@
 import SideBarPage from "@/components/common/sidebar";
 import WishList from "@/components/mypage/wishList";
-import { getServerUser } from "@/utile/api/member/serverUser";
-import { wishPlaceLists } from "@/utile/api/my-page/my-page";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+    title: "가게 위시리스트",
+    description: "마이페이지에서 회원이 위시리스트에 추가한 가게를 보는 페이지"
+}
 
 export default async function WishListPage() {
 
